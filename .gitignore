@@ -1,0 +1,5 @@
+﻿tex/auxil/
+tex/out/*.gz
+tex/out/*.synctex
+tex/out/*.synctex(busy)
+.idea/

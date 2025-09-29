@@ -1,0 +1,1353 @@
+\documentclass[xcolor=table, aspectratio=169]{beamer}
+%\documentclass{beamer}
+\title[Testing consumption-based models]{Fin 395 4 Lecture 2: \\ Testing Consumption-Based Models}
+\author[Empirical Asset Pricing (Johnson)]{Professor Travis Johnson \\ The University of Texas at Austin }
+\date{9/3/2025}
+
+\mode<presentation> {
+\usetheme{Singapore}
+%\usecolortheme{beaver}
+% or g...
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\usefonttheme{professionalfonts}
+
+\definecolor{schoolcolor1}{RGB}{191,87,0}
+\definecolor{schoolcolor2}{RGB}{255,255,255}
+\definecolor{alertschoolcolor}{RGB}{191,87,0}
+
+\setbeamercolor{alerted text}{fg=alertschoolcolor}
+\setbeamercolor*{palette primary}{fg=schoolcolor2,bg=schoolcolor1}
+\setbeamercolor*{palette secondary}{fg=white,bg=schoolcolor2}
+
+\setbeamercolor*{sidebar}{fg=white,bg=black}
+
+\setbeamercolor*{palette sidebar primary}{fg=schoolcolor1!10!black}
+\setbeamercolor*{palette sidebar secondary}{fg=white}
+\setbeamercolor*{palette sidebar tertiary}{fg=schoolcolor1!50!black}
+\setbeamercolor*{palette sidebar quaternary}{fg=gray}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+\setbeamercolor{frametitle}{fg=schoolcolor2,bg=schoolcolor1}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+\setbeamercolor{itemize item}{fg=schoolcolor1,bg=white}
+\setbeamercolor{itemize subitem}{fg=schoolcolor1,bg=white}
+\setbeamercolor{enumerate item}{fg=schoolcolor1,bg=white}
+
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+% \setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+\setbeamertemplate{itemize subitem}[triangle]
+}
+
+
+\usepackage{multicol}
+\usepackage{bigstrut}
+\usepackage{multirow}
+\usepackage{verbatim}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{etex}
+\usepackage[all]{xy}
+\usepackage{eurosym}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{chronology}
+
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\oo}{\emptyset}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\I}{\mathbf{I}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\f}{\mathnormal{f}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\s}{\bar{s}}
+\newcommand{\textepsilon}{\epsilon}
+
+
+\definecolor{lightgray}{gray}{0.9}
+
+
+\usetikzlibrary{arrows,positioning} 
+\tikzset{
+    %Define standard arrow tip
+    >=stealth',
+    %Define style for boxes
+    punkt/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           %text width=8.5em,
+           minimum height=2em,
+           text centered},
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick,
+           shorten <=2pt,
+           shorten >=2pt,}
+}
+
+\newcommand*\oldmacro{}%
+\let\oldmacro\insertshorttitle%
+\renewcommand*\insertshorttitle{%
+  \oldmacro\hfill%
+  \insertframenumber}
+  
+\newcommand{\alertbf}[1]{\alert{\textbf{#1}}}
+
+\def\arraystretch{0.9}
+\setlength{\tabcolsep}{2.5pt}
+\setbeamercovered{transparent}
+
+\begin{document}
+\begin{frame}
+  \titlepage 
+\end{frame}
+
+
+\begin{frame}{Preference-based asset-pricing models}
+Preference-based dynamic asset-pricing models place restrictions on the SDF (agents' intertemporal marginal rate of substitution)
+
+~
+
+These restrictions potentially provide answers as to:
+\begin{itemize}
+\item What should be the riskless interest rate in equilibrium?
+\item What should be the risk premium earned by risky assets?
+\item How predictable should returns be?
+\end{itemize}
+
+~
+
+\alertbf{Today}:
+\begin{itemize}
+\item Methods to assess the empirical performance of such models
+\item Key findings and issues in this literature
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{HJ bounds - discussion}
+
+\begin{center}
+\includegraphics[width = .56\linewidth]{Images/HJ_1991_1.png}
+\end{center}
+
+from HJ (1991), based on annual data on real stock and bond returns from 1891-1985, $\beta = 0.95$, and non-durables and services consumption data
+\end{frame}
+
+
+\begin{frame}{Hansen-Jagannathan bounds}
+Hansen and Jagnnathan (1991) derive bounds on the volatility of the SDF that every candidate SDF must satisfy to be able to price a given set of assets
+\begin{small}
+\begin{itemize}
+\item SDF volatile $\Leftrightarrow$ marginal utility risky $\Leftrightarrow$ high max Sharpe Ratio
+\item So if we observe a SR it sets lower bound on SDF vol
+\end{itemize}
+\end{small}
+
+From Lecture 1, using $t+1$ for the next period (we are going to think about many discrete periods), any SDF $m_{t+1}$ satisfies:
+\begin{align*}  
+\E(m_{t+1} R_{i,t+1}) = 1.
+\end{align*}
+For any tradeable portfolio with return $R_{i,t+1} = w_i'R_{t+1},$ where $R_{t+1}$ is an $N \times 1$ vector of non-redundant tradeable assets. There a unique SDF in the space of tradeable portfolios $m_{t+1}^* = w_m^{'}R_{t+1}$.
+
+\end{frame}
+
+
+\begin{frame}{Hansen-Jagannathan bounds}
+
+Consider a regression of any SDF $m_{t+1}$ on $m_{t+1}^*$:
+\begin{align*}
+m_{t+1} &= a + b \cdot m_{t+1}^* + \epsilon_{t+1}.
+\end{align*}
+
+Because $m_{t+1}^*$ is in the space of traded portfolios, we have that:
+\begin{align*}
+    \E(m_{t+1} m_{t+1}^*) &= 1, \\ 
+    \Rightarrow \E( (a + b \cdot m_{t+1}^* + \epsilon_{t+1}) m_{t+1}^* ) &= 1, \\
+    \Rightarrow a \cdot \E( m_{t+1}^* ) + b \cdot \E( m_{t+1}^* m_{t+1}^* ) &= 1.
+\end{align*}
+Since $m_{t+1}^*$ prices itself and $\E(m_{t+1}) = m_{t+1}^*$, $a=0$ and $b=1$, which gives us:
+\begin{align*}
+m_{t+1} &= m_{t+1}^* + \epsilon_{t+1}, \\
+\Rightarrow \text{Var}(m_{t+1}) &= \text{Var}(m_{t+1}^*) + \text{Var}(\epsilon_{t+1}) \geq \text{Var}(m_{t+1}^*),
+\end{align*}
+which is the HJ-bound on the variance of $m_{t+1}$
+\begin{itemize}
+     \item $m^*_{t+1}$ often referred to as the ``minimum-variance pricing kernel"
+\end{itemize}
+
+\end{frame}
+
+
+\begin{comment}
+\begin{frame}{Hansen-Jagannathan bounds}
+
+Remember that, for any portfolio in $X_{t+1}$, we have:
+\begin{align*}
+\frac{\vert \mathbb{E}(R_{x,t+1}) - R_f \vert}{\sigma(R_{x,t+1})} &\leq R_f \sigma(m_{t+1}^*) \\
+R_{x,{t+1}} &\equiv \frac{x_T}{p_t(x_{t+1})}
+\end{align*}
+Combined with the HJ bound, we have
+\begin{align*}
+\frac{\vert \mathbb{E}(R_{x,t+1}) - R_f \vert}{\sigma(R_{x,t+1})} &\leq R_f \sigma(m_{t+1}) 
+\end{align*}
+For all portfolios $x$ and all stochastic discount factors $m_{t+1}$. 
+\end{frame}
+\end{comment}
+
+% \begin{frame}{Hansen-Jagannathan bounds}
+
+% Recall that the $\R^2$ in th projection is equal to the squared correlation of $m_{t+1}$ and $m^*_{t+1}$. Thus, 
+
+% $$\text{Var}[m_{t+1}] = \frac{\text{Var}[m^*_{t+1}]}{Corr[m_{t+1},m^*_{t+1}]^2},$$
+
+% i.e., the lower the correlation of the candidate SDF with asset returns, the higher must be its volatility in order to be able to price the payoffs in $X_{t+1}$.
+
+% ~
+
+% This is important because many macroeconomic variables such as consumption growth that show up in preference-based SDFs have very low correlation with asset returns
+% \begin{itemize}
+%     \item HJ bound is likely quite loose!
+% \end{itemize}
+
+% \end{frame}
+
+
+\begin{frame}{HJ bounds w/o riskless payoff}
+
+Suppose the portfolio space does not contain a truly riskless payoff (realistic)
+
+~
+
+Let's augment the portfolio space with a hypothetical riskless asset, posit $R_f = \frac{1}{\nu}$ as the unconditional risk-free rate a candidate stochastic discount factor would assign to the hypothetical risk-less payoff, and include it in the portfolio space
+
+~
+
+Now the volatility bound becomes:
+
+\begin{align*}
+\text{Var}(m_{t+1}) \geq \text{Var}(m_{t+1}^*(\nu))
+\end{align*}
+
+The bound tells us the lower bound for the volatility that a candidate SDF must satisfy, for a given mean of the SDF $\nu$, to be able to correctly price the payoffs in the return space.
+
+\end{frame}
+
+
+\begin{frame}{Calculation of HJ Bounds}
+    A convenient way of calculating $\text{Var}(m^*_{t+1} (\nu))$ is to express it as a projection of any $m_{t+1}$ onto the space onto the vector of non-redundant risky assets ${R}_{t+1}$ and a constant, and absorb the mean of $m_{t+1}$ ($\E[m_{t+1}] = \nu$) in the intercept:
+\begin{align*}
+m^*_{t+1} (\nu) &= \nu + \beta_{m,R}(\nu)'(R_{t+1} - \E[R_{t+1}]), \\
+\text{where } \beta_{m,R}(\nu) &= \Sigma^{-1} \E[(m_{t+1}-\nu)(R_{t+1}-\E[R_{t+1}])] \\
+ &= \Sigma^{-1} \E[m_{t+1}(R_{t+1}-\E[R_{t+1}])] = \Sigma^{-1} (1 - \nu \E[R_{t+1}]), \\
+ \text{and } \Sigma &= \E[(R_{t+1}-\E[R_{t+1}])(R_{t+1}-\E[R_{t+1}])']
+\end{align*}
+It follows that:
+\begin{align*}
+        \text{Var}[m^*_{t+1}(\nu)] &= (1 - \nu \E[R_{t+1}])' \Sigma^{-1}(1 - \nu \E[R_{t+1}]) \\
+        &= \left( \E[R_{t+1}] - \frac{1}{\nu} \right)' \Sigma^{-1} \left( \E[R_{t+1}] - \frac{1}{\nu} \right) \nu^2  \\
+\end{align*}
+% We can compute the sample counter part of this variance from averages and covariances of historical returns.
+
+\end{frame}
+
+
+% \begin{frame}{Calculation of HJ Bounds}
+
+
+% \vskip 6pt
+
+% If the payoffs are gross returns (divide all payoffs at $t+1$ by their prices at $t$),
+% \begin{align*}
+% \text{Var}[m^*_{t+1}(\nu)] &= \text{Var}[R^*_{t+1}(\nu)] = (1 - \nu \E[R_{t+1}])'\Sigma^{-1}(1 - \nu \E[R_{t+1}])\\
+% &= \left( \E[R_{t+1}] - \frac{1}{\nu} \right)' \Sigma^{-1} \left( \E[R_{t+1}] - \frac{1}{\nu} \right) \nu^2 \\
+% \Sigma &= \E[(R_{t+1}-\E[R_{t+1}])(R_{t+1}-\E[R_{t+1}])']
+% \end{align*}
+
+% note that $\frac{1}{\nu} = R_F$, if an unconditionally riskless asset exists, otherwise $\frac{1}{\nu}$ is the hypothetical unconditional risk-free rate. 
+ 
+
+% \end{frame}
+
+\begin{frame}{HJ bounds and Sharpe Ratio bounds}
+
+Note also that, for a given $\nu$,
+$$\left(\E[R_{t+1}] -\frac{1}{\nu}\right)'\Sigma^{-1}\left(\E[R_{t+1}] -\frac{1}{\nu}\right)$$
+is the max. squared Sharpe Ratio that can be obtained from the returns $R_{t+1}$, which is also equal to the Sharpe Ratio of tangency portfolio with returns $R_\text{msr}(\nu)$, and so:
+
+$$\text{Var}[R^*_{t+1}(\nu)] = \dfrac{(\E[R_\text{msr}(\nu)]- \frac{1}{\nu})^2}{\text{Var}[R_\text{msr}(\nu)]}\nu^2$$
+
+and the HJ bound becomes
+
+$$\text{Var}[m_{t+1}] \geq \dfrac{(\E[R_\text{msr}(\nu)]-\frac{1}{\nu})^2}{\text{Var}[R_\text{msr}(\nu)]}\nu^2 $$
+\end{frame}
+
+
+\begin{frame}{HJ bounds and Sharpe Ratio bounds}
+
+Noting that $\E[m_{t+1}] = \E[M^*_{t+1}(\nu)]= \nu = R_f(\nu)^{-1}$ and taking square roots,
+
+$$\dfrac{\sigma_m}{\E[m_{t+1}]} \geq \dfrac{\E[R_\text{msr}(\nu)]-R_F(\nu)}{\sigma_\text{msr}}$$
+
+Hence, we get an intuitive relationship between the mean-variance frontier of stochastic discount factors (the HJ bound) and the mean-variance frontier for returns
+
+\begin{itemize}
+
+\item When a portfolio with high Sharpe Ratio can be constructed from returns, this means that there is a high risk premium earned by these assets per unit of risk $\Rightarrow$ the SDF that prices these returns must be highly volatile. 
+
+\item \alertbf{Economic interpretation}: When the risk premium is high, this means that SDF must assign very different prices to different states of the world (marginal utilities are very different in different states of the world), i.e., it must be very volatile 
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Comparison of HJ bounds with candidate pricing kernels}
+\textbf{Example:} Single representative investor with power utility
+
+\begin{align*}
+m_{t+1} &= \beta \left( \frac{C_{t+1}}{C_t} \right)^{-\gamma}\\
+\gamma &> 0
+\end{align*}
+
+The HJ bounds are useful to assess whether a model like this might be able to explain the asset returns we see in the data. 
+
+~
+
+Changing the relative risk aversion parameter $\gamma$ has two effects
+
+\begin{itemize}
+
+\item Higher $\gamma$ makes $m_{t+1}$ more volatile
+
+\item Higher $\gamma$ lowers (raises) $\E[m_{t+1}]$ for low (high) $\gamma$
+\begin{itemize}
+\item HJ (1991) describes why (convexity of $m$)
+\end{itemize}
+
+
+
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Equity premium puzzle}
+
+\begin{itemize}
+\item We need $\gamma$ close to 30 so that the power utility SDF can simultaneously price stocks and bonds
+\begin{small}
+\begin{itemize}
+\item Important to remember: it's just a bound, doesn't exhaust all the testable implications of the pricing restriction
+\item Doesn't mean that power utility model with $\gamma = 30$ can actually price these assets
+\item Doesn't take into account the correlation of $m_{t+1}$ and $x_{t+1}$
+\end{itemize}
+\end{small}
+
+~
+
+\item Our first glimpse of the \alertbf{equity premium puzzle}: equity market returns much higher than predicted by reasonably parameterized CRRA models
+\begin{itemize}
+    \item Stated most forcefully by Mehra and Prescott (1985) (more on this in a bit)
+\end{itemize}
+
+
+
+% \item Economic interpretation of higher risk-premium for higher $\gamma$: The equity premium puzzle is the fact that stocks had historically a high average return in excess of Treasury Bills relative to the standard deviation of returns ($\rightarrow$ high Sharpe Ratio). The challenge has been to come up with an economic model for an SDF that is volatile enough to correctly price stocks relative to TBills and bonds. 
+
+\end{itemize}
+
+\end{frame}
+
+
+
+
+\begin{frame}{Risk-free rate puzzle}
+
+HJ bounds also illustrate connection between equity premium puzzle and a related puzzle: risk-free rates are too low relative to average equity returns
+
+\begin{itemize}
+\item Moderately high values of $\gamma$ imply low $\E[m_{t+1}]$, which implies a (too) high risk-free rate. For comparison w/ HJ Figure 1: historical short-term real interest rate is around 2\% (annually), implying $\E[m_{t+1}]$ of around $\dfrac{1}{1.02} \approx 0.98$.
+
+\item In our earlier HJ bounds graph, $\gamma \approx 30$ ``solves" both the equity premium and risk-free rate puzzles. However, this turns out to be a knife-edge result that is very sensitive to the data sample used to evaluate the bound. (\alertbf{Homework 1})
+\begin{itemize}
+\item Moreover, $\gamma \approx 35$ doesn't square with experimental evidence on risk aversion, which says $\gamma \leq 10$ is plausible range
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+\begin{comment}
+\begin{frame}{Risk-free rate puzzle}
+\begin{itemize}
+\item It is a ``knife-edge" case, because one has to balance two countervailing economic effects on the risk-free rate with changing $\gamma$: 
+\end{itemize}
+\begin{enumerate}
+\item First, ignoring convexity, higher $\gamma$ implies lower expected marginal utility growth. This lowers the incentive for the representative agent to save and increases the risk-free rate. 
+
+\item Second, marginal utility is convex in $\frac{C_{t+1}}{C_t}$. With uncertainty about $\frac{C_{t+1}}{C_t}$, higher $\gamma$ implies more convexity, and hence higher expected marginal utility growth 
+\begin{itemize}
+\item Generates a precautionary saving motive for the representative agent to reduce volatility of future marginal utility and reduce expected marginal utility growth. For high values of $\gamma$, this effect dominates, and higher $\gamma$ raises demand for the riskless asset, causing the risk-free rate to decline in equilibrium with higher $\gamma$
+\end{itemize}
+\end{enumerate}
+\end{frame}
+\end{comment}
+
+
+
+% \begin{frame}{Conditional moment restrictions}
+
+% By conditioning down from $$p_t (x_{t+1}) = \E[m_{t+1} x_{t+1} | I_t]$$
+
+% to 
+% $$\E[p_t (x_{t+1})] = \E[m_{t+1} x_{t+1}]$$
+
+% at the beginning of our derivation of HJ bounds, we are losing restrictions implied by asset-pricing theory. We can preserve the restrictions implied by the $conditional$ moment restriction by recognizing that it implies
+% $$\E[(m_{t+1} x_{t+1} - p_t (x_{t+1}))  \otimes z_t] =0$$
+
+% for any vector of instruments $z_t$ in $I_t$, i.e., for $any$ non-linear function of $any$ random variables in $I_t$. 
+% \end{frame}
+
+
+% \begin{frame}{Conditional moment restrictions}
+% Note that this statement is equivalent to the statement that
+% $$\E[m_{t+1}z'_t x_{t+1} - z'_t p_t (x_{t+1})] =0$$
+% must hold for any $N \times 1$ vector of instruments $z_t$ in $I_t$. Rearranging, 
+
+% $$\E[m_{t+1}z'_t x_{t+1}]= \E[ z'_t p_t (x_{t+1})]$$
+
+% where $z'_t p_t (x_{t+1}) = p_t (z'_t x_{t+1})$ follows from LOOP.
+
+% \begin{itemize}
+% \item We can interpret the ``scaled payoffs" $ z'_t x_{t+1}$ as payoffs to managed portfolios or dynamic trading strategies. 
+
+% \item In tests of asset pricing models or evaluation of HJ bounds, we can incorporate conditioning information by considering the payoff space spanned by scaled payoffs, $X^z_{t+1} \equiv \{ x^z_{t+1} = z'_t x_{t+1}, z_t \in I_t\}$ and proceed in the same way as before (difference from before: $c$ not constant)
+% \end{itemize}
+% \end{frame}
+
+
+
+
+% \begin{frame}{Conditional moment restrictions}
+
+% \begin{small}
+% \begin{itemize}
+% \item The space $X^z_{t+1}$ is typically infinite, because there are infinitely many linearly independent $z_t$ that we would have to consider (all non-linear functions of all random variables in $I_t$). This makes it difficult to exploit all the conditional moment restrictions. 
+
+% \item In practice, we want to choose variables as instruments that predict conditional moments of payoffs and the SDF. We will later see that there is an ``optimal" set of instruments.
+
+% \item Once we settle on a set of instruments, our entire previous analysis goes through, replacing payoffs $x_{t+1}$ with scaled payoffs $x_{t+1} \otimes z_t$.
+% \end{itemize}
+
+% For example, suppose we have $N$ linearly independent basis payoffs and $Q > N$ instrument vectors $z_t$. We have $X_{t+1}^z = Z_t x_{t+1}$, where $Z_t$ is $Q \times N$ instrument matrix. We have:
+% $$ \E( p_t(Z_tx_{t+1}) ) = \E[m_{t+1}Z_tx_{t+1}]$$
+% and we can follow the same analysis as before, with $x^z_{t+1} = Z_t x_{t+1}$.
+
+% \end{small}
+% \end{frame}
+
+
+% \begin{frame}{Unconditional HJ bounds with conditioning information}
+
+% Projecting $m_{t+1}$ on $X^z_{t+1}$ we get
+% $$m^{z*}_{t+1} = \E[p_t(x^z_{t+1})]'\E[x^z_{t+1}x^{z\prime}_{t+1}]^{-1}x^z_{t+1},$$
+
+% the unique SDF in $X^z_{t+1}$ satisfying $\E[x^z_{t+1}z'_tx_{t+1}] = \E[p_t(x^z_{t+1})]$. Proceeding exactly as before, we obtain 
+% $$\text{Var} [m_{t+1}] \geq \text{Var}[m^{z*}_{t+1} (\nu_t)],$$
+% In practice, how ``sharp" the bound is relative to the bound that we obtain ignoring conditioning information ($z_t$ constant) depends on the instruments that we include. 
+
+% ~
+
+% Note that this bound
+% \begin{itemize}
+
+% \item incorporates \textbf{conditioning information} (because we look at scaled payoffs $x^{z*}_{t+1}$)
+
+% \item but it is an \textbf{unconditional bound} (in the sense of being a bound on the unconditional variance of the SDF).
+
+% \end{itemize}
+% \end{frame}
+
+
+
+
+% \begin{frame}{Conditional HJ bounds}
+% We can also ask what the bound is conditional on information in $I_t$. Let $m^*_{t+1|t} \equiv p_t(x_{t+1})' \E[x_{t+1}x'_{t+1}|I_t]^{-1} x_{t+1}$, which is the unique SDF in $X_{t+1}$ that prices payoffs conditional on $I_t$,
+
+% $$\E[m^*_{t+1|t}x_{t+1}|I_t] = p_t(x_{t+1}).$$
+
+% Pre-multiplying with instruments $z_t \in I_t$ and taking unconditional expectations, 
+
+% $$\E[z'_t \E_t [m^*_{t+1|t}x_{t+1}|I_t]] = \E[z'_t p_t(x_{t+1})],$$
+
+% and so,
+
+% $$\E[ \E [m^*_{t+1|t}z'_t x_{t+1}|I_t]] = \E[p_t(z_t' x_{t+1})].$$
+
+
+% but we know that $m^{z*}_{t+1}$ is the \textit{unique} solution in the payoff space to this unconditional pricing restriction, and hence it must be that
+
+% $$m^{z*}_{t+1} = m^{z*}_{t+1|t}.$$
+
+% \end{frame}
+
+
+
+
+% \begin{frame}{Conditional HJ bounds with conditioning information}
+
+% \begin{itemize}
+% \item This observation is from Hansen and Richard (1987, section 4)
+
+% \item It means that $m^{z*}_{t+1}$ not only prices all scaled payoffs in $X^z_{t+1}$ unconditionally, but also conditional on $I_t$
+
+% \begin{itemize}
+% \item But note that the ``conditional on $I_t$" statement assumes that the $X^z_{t+1}$ that we use to construct $m^{z*}_{t+1}$ contains payoffs scaled by $all$ instruments and $all$ non-linear functions thereof in $I_t$ (impossible in practice)
+
+% \item In practice, we can derive $m^{z*}_{t+1}$, and hence the conditional HJ bound only conditional on much smaller set of instruments and only restricted (often linear) functions thereof
+% \end{itemize}
+
+% \item If we have $m^{z*}_{t+1}$, then the conditional volatility of $m^{z*}_{t+1}$ gives us the \textbf{conditional} HJ bound (with the above caveats)
+
+% $$\text{Var}[m_{t+1} |I_t] \geq \text{Var}_t[m^{z*}_{t+1}(\nu)|I_t]$$
+
+% \end{itemize}
+% \end{frame}
+
+
+
+
+% \begin{frame}{SDF variance bounds with optimal instruments}
+
+% \begin{itemize}
+% \item In practice, we can only use a small subset of instruments, raising the question of how to choose these instruments
+
+% \item Denote $\sigma^2(\nu, z'_t x_{t+1})$ the SDF variance bound obtained with a given vector $N \times 1$ of instruments $z_t$ and the payoff space generated by $z'_t x_{t+1}$. Bekaert and Liu (2004) suggest to choose instruments $z^*_t$ so that
+
+% $$\sigma^2(\nu, z^{*\prime}_t x_{t+1}) = \sup\limits_{z'_t\in I_t} \sigma^2(\nu, z'_t x_{t+1}).$$
+
+% This means that they are looking for the highest possible HJ unconditional bound, i.e., the HJ bound that provides the biggest challenge to an asset-pricing model. They find that 
+% $$z^*_t = \E[ x_{t+1}x'_{t+1}|I_t]^{-1}(p_t(x_{t+1})-\omega \E[ x_{t+1}|I_t]),$$
+
+% where $\omega$ is a function of unconditional moments of $x_{t+1}$ and $p_t(x_{t+1})$.
+
+
+% \end{itemize}
+% \end{frame}
+
+% \begin{frame}{SDF variance bounds with optimal instruments}
+% \begin{itemize}
+% \item If the relevant conditional moments are known, i.e., correctly specified, we obtain the sharpest possible bound
+
+% \item Of course, we have the same issue again that in practice we can only hope to do this with a very limited information set. 
+
+% \item Implementation requires a model of conditional first and second moments
+
+% \begin{itemize}
+% \item Example: Multivariate GARCH for variances and covariances and a VAR for conditional means
+% \end{itemize}
+% \item A useful property of the BL variance bound is that even with misspecified conditional moments, its always a valid lower bound on the variance of the SDF (although it might not be the highest possible lower bound). It never overestimates the required SDF volatility. 
+
+% \end{itemize}
+
+% \end{frame}
+
+\begin{frame}{Euler-equation tests of preference-based models}
+\begin{itemize}
+\item The HJ bound is just a bound - it is possible that a candidate SDF satisfies the bound, but yet it doesn't price the assets
+
+
+\item But the HJ bounds are a useful first check, rejecting many preference-based models on their own 
+
+\item To go beyond the HJ bounds, we now use additional restrictions implied by asset-pricing theory about the joint distribution of asset returns and model-implied aggregates like consumption
+\begin{itemize}
+    \item Need to check pricing relation -- do assets with high correlation to SDF have higher Sharpe Ratio -- in addition to the volatility of the SDF
+\end{itemize}
+
+
+\item We focus on conditional moment restrictions implied by first-order conditions of agents' inter temporal optimization problem (Euler equations). We can test these restrictions with GMM without making additional auxiliary assumptions about the distribution of asset returns and risk factors. 
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Euler-equation tests of preference-based models}
+
+Assume a representative agent with CRRA preferences, as in Hansen and Singleton (1982), with power utility who maximizes
+
+$$ \E\left[\sum\limits^\infty_{j=0} \beta^j \dfrac{C^{1-\gamma}-1}{1-\gamma} \middle\vert I_t \right],\gamma > 0,$$
+
+First-order conditions yield the Euler equations (with gross returns on $N$ assets)
+
+$$ \E\left[\beta\left(\dfrac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1} - 1\middle\vert I_t\right] = 0 $$
+
+These conditional moment restrictions imply that $\forall \hspace{2pt} (Q \times 1) \hspace{2pt} z_t \in I_t$,
+
+$$ g(\beta,\gamma) \equiv E\left[\left(\beta\left(\dfrac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}-1\right) \otimes z_t\right] = 0$$
+
+I.e., we have $NQ$ population orthogonality conditions. 
+
+\end{frame}
+
+\begin{frame}{GMM estimation}
+
+To have at least exact identification of the parameter vector $\theta \equiv \left[ \begin{array}{cc}\beta & \gamma \end{array} \right]'$, we need $NQ \geq 2$. The sample counterpart of the population orthogonality conditions is
+
+$$g_T(\theta) \equiv \E_T \left[\left(\beta\left(\dfrac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}-1\right) \otimes z_t\right], $$
+
+where $\E_T[\cdots]\equiv \frac{1}{T}\sum^T_{t=1}(\cdots)$. Under the null hypothesis that the model of asset prices is correctly specified, $g_T(\theta_T)$ should be close to zero in a sufficiently large sample as $\theta_T \rightarrow \theta$. HS estimate $\theta$ with GMM, which involves choosing $\theta_T$ to minimize
+
+$$J_T(\theta) = g_T(\theta)' W_T g_T(\theta),$$
+
+where $W_T$ is a symmetric $NQ \times NQ$, positive definite matrix that can depend on sample information and prescribes how much weight we put on each orthogonality condition when minimizing $J_T$
+
+\end{frame}
+
+% \begin{frame}{GMM discussion}
+    
+% \end{frame}
+
+% \begin{frame}{GMM estimation}
+
+% The first-order conditions for the minimization problem of the criterion function yield the GMM estimator
+
+% $$ \dfrac{\partial g_T(\theta_T)'}{\partial \theta_T}W_Tg_T(\theta_T) = 0.$$
+
+% Note that $ \dfrac{\partial g_T(\theta_T)'}{\partial \theta_T}$ (the Jacobian) is a $K \times NQ$ matrix and so is $ \dfrac{\partial g_T(\theta_T)'}{\partial \theta_T}W_T$.
+
+% \begin{itemize}
+
+% \item Hence, we are forming $K$ linear combinations of $NQ$ moment conditions, and we are choosing $\theta_T$ to set them to zero
+
+% \item If $g_T(\theta_T)$ were a linear function of $\theta_T$, we could easily and directly solve for $\theta_T$. We will encounter such cases in the lecture on linear factor models
+
+% \item Here, $g_T(\theta_T)$ is non-linear in $\theta_T$ and we proceed by minimizing $J_T$ numerically (or solving the $K$ first order conditions numerically)
+
+% \end{itemize}
+
+% \end{frame}
+
+\begin{frame}{GMM estimation}
+
+Consistency and asymptotic normality of the estimator $\theta_T:$ Under the null that the model is correctly specified (Hansen 1982),
+
+\begin{align*}
+\sqrt{T} g_T(\theta_T) &\overset{a}{\rightarrow} N(0,S), \\
+S &\equiv \lim_{T\rightarrow \infty} \E_T[f(x_{t+1},z_t,\theta_T) f(x_{t+1},z_t,\theta_T)'] \\
+f(x_{t+1},z_t,\theta_T) &\equiv \left( \left( \beta \frac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}-1\right) \otimes z_t
+\end{align*}
+
+% \begin{itemize}
+% \item In practice, it is useful to demean the $f(x_{t+1},z_t,\theta_T)$ before forming the sample equivalent $\E_T[f() f()']$. Under the null and asymptotically, this doesn't make a difference, but it may improve performance in finite samples with misspecfication. 
+
+% \item To correct for autocorrelation up to lag $\ell$, use
+% \end{itemize}
+% \begin{small}
+% $$S_T = \E_T \left[ \sum_{j = -\ell}^{\ell} f(x_{t+1},z_t,\theta_T) f(x_{t+1-j},z_{t-j},\theta_T)' \right] $$
+% \end{small}
+\end{frame}
+
+
+\begin{frame}{GMM estimation}
+
+Let $d' \equiv  \dfrac{\partial g_T(\theta_T)'}{\partial \theta_T}.$ Hansen (1982) shows that
+
+$$\sqrt{T} (\theta_T - \theta) \sim N\left(0, (d'Wd)^{-1}d'WSWd (d'Wd)^{-1}\right),$$
+
+with $W = S^{-1}$ this simplifies to
+
+$$\sqrt{T} (\theta_T - \theta) \sim N\left(0, (d'S^{-1}d)^{-1}\right).$$
+
+Hansen (1982) shows that (under the null) the choice $W = S^{-1}$ yields the asymptotically efficient estimator (``optimal GMM")
+
+\begin{itemize}
+\item In practice we can obtain a first-stage estimate with an essentially arbitrary W (often the identity matrix) and the obtain $S_T$ from the first-stage estimates, and set $W = S_T^{-1}$ in the second stage
+
+\item Alternatively, one can iterate this until convergence (this does not make a difference for consistency and efficiency, but may work better in finite samples)
+
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{GMM goodness of fit tests / test of the over identifying restrictions}
+
+Let $J_T$ be obtained with $W = S^{-1}$. Then, Hansen (1982) shows: 
+
+$$T \cdot J_T(\theta_T) \sim \chi^2_{NQ-K}$$
+
+\begin{itemize}
+\item Low $J_T$ indicates parameters fit the moments well, high $J_T$ poorly $\Rightarrow$ rejecting the null means model rejected (want low $J_T$, high $p$-value)
+\item Note that failure to reject can be a consequence of low power or estimation error, not a `good' or `correct' model
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Hansen and Singleton (1982)}
+Estimates the representative agent/CRRA model using:
+\begin{itemize}
+\item $x_{t}$: vector of 2-3 different portfolios returns
+\item $z_{t}$: $t, t-1, \ldots$ values of returns and consumption growth
+\item Their coefficient $\alpha$ is the negative of the RRA coefficient
+\item Sample period 1959:2 - 1978:12, monthly
+\item Two-step optimal GMM estimator
+\end{itemize}
+
+~
+
+This approach is useful in lots of settings because you do not need to solve the model in closed form, all you need are some first-order conditions
+\end{frame}
+
+% \begin{frame}{Hansen and Singleton (1982) (Erratum, 1984)}
+% \begin{center}
+% \includegraphics[width=0.66\linewidth]{Images/HS_1982_3.png}
+% \end{center}
+% \end{frame}
+
+
+\begin{frame}{Hansen and Singleton (1982) (Erratum, 1984)}
+\begin{itemize}
+\item Overidentifying restrictions reject the model at a high level of confidence (p-value is 1-Prob. in Table III).
+\begin{itemize}
+\item This is a manifestation of the equity premium and risk-free rate puzzles
+\end{itemize}
+
+\item Point estimates of $\alpha$ is sometimes positive, (implying convex utility) although not significantly so
+
+\item Results are sensitive to the assets included
+
+\item How sensitive are the results to the instrument set?
+
+\item Is the sample long enough to rely on asymptotics?
+\begin{itemize}
+\item SE seem small relative to how much estimates depend on choices of returns/instruments
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Econometric Issues}
+\alertbf{Finite sample performance of GMM (under the null of correct specification)}
+
+\begin{itemize}
+\item Tauchen (1986), Hansen Heaton and Yaron (1996).
+\end{itemize}
+
+\alertbf{Misspecification}
+
+\begin{itemize}
+\item Asymptotic theory is based under the null that the model is perfectly specified.
+
+\item Parameter estimates are interpreted as estimates of RRA, and more generally, as estimates of ``deep" parameters of an underlying structural model, but this practice is questionable with a misspecified model that is rejected by the data.
+
+\item Hall and Inoue (2003) show how misspecification affects the limiting distribution of GMM estimators. 
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Mehra and Prescott (1985) discussion}
+    \begin{center}
+\includegraphics[width=0.6\linewidth]{Images/mp_1985.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Mehra and Prescott (1985) moments}
+Facts about moments, 1889-1978:
+\begin{itemize}
+\item Short-term real interest rate: 0.8\%/year
+\item Excess stock return: 6.2\%/year
+\item Annual growth rate of agg. per capita consumption: 1.83\%
+\item Standard deviation of this growth rate: 3.57\%
+%\item AR(1) coefficient of this growth rate: -0.14\%
+\end{itemize}
+
+~
+
+Can the CRRA/rep agent consumption-based utility SDF fit just these facts for reasonable risk aversion values?
+\end{frame}
+
+\begin{frame}{Mehra and Prescott (1985) assumptions}
+Show that all calibrations with $\gamma < 10$ fail under assumptions:
+\begin{itemize}
+\item CRRA utility
+\item Consumption growth dynamics
+$$\lambda_{t+1} \equiv \frac{C_{t+1}}{C_t}, \hspace{12pt} \lambda_t \hspace{4pt} i.i.d., E [\lambda_t] = \overline{\lambda}, \text{Var}(\lambda_t) = \sigma_\lambda^2$$
+\item Stochastic Discount Factor
+$$m_{t+1} = \beta \lambda^{-\gamma}_{t+1}$$
+\item Implied risk-free rate
+$$R_{f,t+1} = \frac{1}{\E_t\left( m_{t+1} \right)} = \frac{1}{\E(\beta \lambda^{-\gamma}_t)}$$
+\item Stock market is a claim on aggregate consumption
+\begin{itemize}
+\item Simplifies connection between cons. and stock moments
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Mehra and Prescott (1985) results}
+These assumptions imply:
+\begin{align*}
+\E ( R_{m,t+1} ) - \E ( R_{f,t+1} ) &= \frac{\overline{\lambda}}{\E \left[ \beta \lambda_{t+1}^{1-\gamma} \right]} - \frac{1}{\E \left[ \beta \lambda_{t+1}^{-\gamma} \right] } \\
+\E ( R_{f,t+1} ) &=  \frac{1}{\E \left[ \beta \lambda_{t+1}^{-\gamma} \right] }
+\end{align*}
+\vskip 12pt
+Now, search over all 
+\begin{align*}
+0 &\leq \gamma \leq 10 \\
+0 &\leq \beta \leq 1
+\end{align*}
+to find range of unconditional risk premia and risk-free rates. 
+\begin{itemize}
+\item Uses consumption data to compute moments of $\lambda$
+\item Uses stock data to compute `target' moment $\E ( R_{m,t+1} -R_{f,t+1} )$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Mehra and Prescott (1985) conclusions}
+\begin{quote}
+``With real per capita consumption growing at nearly two percent per year on average, the elasticities of substitution (TJ: $-\gamma$) between the year $t$ and year $t+1$ consumption good that are sufficiently small to yield the six percent average equity premium also yield real rates of return far in excess of those observed.''
+\end{quote}
+\vskip 12pt
+\begin{itemize}
+\item Similar to conclusion reached more generally in Hansen Jagannathan (1991)
+\item Started a still-ongoing trend of matching moments rather than estimating models
+\item Other papers in 1980s had similar results, but MP understand the importance of what they found and explained it well
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Summary}
+\begin{itemize}
+\item Consumption-based models featuring CRRA representative agents rejected by historical asset pricing data
+\begin{itemize}
+    \item Consumption growth is not sufficiently correlated with risky asset returns
+\item With power utility, relative risk aversion is handcuffed to intertemporal elasticity of substitution $\Rightarrow$ hard to simultaneously match risk-free rate and risk premium
+\end{itemize}
+
+\item Some of the recent modeling innovations in the frictionless, representative-agent framework seem to have had some success in improving the explanatory power, but how much is still debated
+\begin{itemize}
+    \item Later today: long-run risk, habit formation, etc
+\end{itemize}
+
+\item Perhaps the reason for the empirical failures is that most models operate in a world that is too idealized: Rational expectations, no frictions, agents have identical preferences, ...
+
+\begin{itemize}
+    \item Later in the semester!
+\end{itemize}
+
+\end{itemize}
+
+\end{frame}
+
+{
+\setbeamercolor{background canvas}{bg=schoolcolor1}
+\begin{frame}
+\begin{center}
+\large{
+\textcolor{white}{BREAK}    
+}
+\end{center}
+\end{frame}
+}
+
+
+\begin{frame}{Consumption-based asset pricing}
+\alertbf{Central question}
+\begin{itemize}
+\item Can consumption-based models explain key moments of the asset pricing data?
+\item Focus primarily on average returns of short-term bonds and the stock market, less so on the cross-section of stock returns
+\end{itemize}
+
+\vskip 8pt
+
+\alertbf{Rules of the game}
+
+\begin{itemize}
+\item Assume agents derive utility from consumption only
+\item Show that joint properties of consumption, asset returns are mutually consistent
+\item Typically assume representative agent, frictionless markets, one consumption good
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Summary of equity premium puzzle}
+
+\alertbf{Core of equity premium puzzle}
+
+\begin{itemize}
+\item Consumption growth is not sufficiently correlated with risky asset returns
+\item With power utility, RRA is tied to IES $\Rightarrow$ hard to simultaneously match risk-free rate and risk premium
+\end{itemize}
+
+
+\alertbf{Proposed ``solutions''}
+
+\begin{itemize}
+
+\item Kreps-Porteus (1978) utility: e.g., Epstein and Zin (1991)
+
+\item Long-run risk: e.g., Bansal and Yaron (2004)
+
+\item Habit formation: e.g., Campbell and Cochrane (1999)
+
+\item Heterogeneous agents: e.g., Brav, Constantinides, and Gezcy (2002)
+
+\item Rare disasters: e.g, Barro (2006)
+
+\item Measurement error: e.g., Savov (2011)
+
+\item ...
+
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Epstein and Zin (1991)}
+First proposed solution: \alertbf{recursive utility}
+
+$$U_t = \left\{ (1- \beta ) C_t^{\frac{1-\gamma}{\theta}} + \beta E_t[U_{t+1}^{1-\gamma}]^{\frac{1}{\theta}}\right\}^{\frac{\theta}{1-\gamma}}$$
+
+where $\gamma$ is the RRA parameter, $\theta \equiv \frac{1-\gamma}{1-1 / \psi}$ and $\psi$ is the elasticity of intertemporal substitution (EIS)
+\begin{itemize}
+\item $\gamma$ measures the willingness to substitute consumption across states of nature
+\item $\psi$ measures willingness to substitute over time as interest rate changes
+
+\item $\gamma = \frac{1}{\psi}$: power utility (no preference over timing of uncertainty resolution)
+\item $\gamma > \frac{1}{\psi}$: early resolution of uncertainty is preferred
+\item $\gamma < \frac{1}{\psi}$: late resolution of uncertainty is preferred
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Epstein and Zin (1991)}
+
+Epstein and Zin show that this utility specification leads to the Euler equation
+
+$$ E_t \left[ \beta^\theta \left(\frac{C_{t+1}}{C_t}\right)^{-\frac{\theta}{\psi}} \left(\frac{1}{R_{M,t+1}}\right) ^{1-\theta} R_{t+1}\right] = 1,$$
+
+where $R_{M,t+1}$ is the return on a claim to aggregate consumption (wealth), Epstein and Zin use stock market index return as a proxy.
+
+\begin{itemize}
+
+\item By breaking the $\gamma = \frac{1}{\psi}$ link between RRA and EIS in the power utility model, Epstein-Zin preferences have the potential to resolve the asset-pricing puzzles in the sense of allowing the model to fit TBill returns and stock returns simultaneously (not necessarily in the sense of fitting the data with reasonable RRA and EIS parameters)
+
+\end{itemize}
+\end{frame}
+
+%%something here?
+\begin{frame}{Epstein and Zin (1991)}
+\begin{center}
+\includegraphics[width = .75\linewidth]{Images/EZ_1991_2.png}
+\end{center}
+
+Note: $\delta_{EZ} = 1-\beta, \gamma_{EZ} = \alpha_{EZ}/(1-\frac{1}{\psi}), \sigma_{EZ} = \psi, \alpha_{EZ} = 1- \gamma$
+\begin{itemize}
+\item $\hat{\beta} > 1$ (??)
+\item RRA $\hat{\gamma} \approx$ 1 (reasonable)
+\item $\hat{\psi} < \frac{1}{\gamma}$ $\Rightarrow$ consumers prefer \alertbf{late} resolution of uncertainty (??)
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Long-run risk models}
+Epstein and Zin (1991), like Mehra and Prescott (1985), assume equity market proportional to aggregate consumption claim.
+\begin{itemize}
+\item Greatly simplifies estimation 
+\item Empirically dubious given small correlation between equity returns/dividend growth and consumption growth
+\end{itemize}
+~
+
+Long run risk models, starting with Bansal and Yaron (2004), make assumptions about the consumption dynamics to explicitly solve for the return on the consumption claim within a model, e.g.:
+\begin{align*}
+\Delta c_{t+1} &= \mu + x_t + \sigma_t\nu_{t+1}\\
+x_{t+1} &= \rho x_t + \varphi \sigma_t e_{t+1},
+\end{align*}
+
+where $\varphi \sigma_t $ can be quite small, but $\rho$ is close to one, and $\nu_{t+1}$ and $e_{t+1}$ are iid normal shocks. $e_{t+1}$ represents ``long-run risk''
+
+\end{frame}
+
+\begin{frame}{Bansal and Yaron (2004) intuition}
+
+Fluctuations in $x_{t+1}$:
+\begin{itemize}
+\item Small enough we cannot distinguish observed consumption process from random walk given data
+\item So persistent they generate large swings in aggregate wealth = NPV of future consumption
+\end{itemize}
+
+~
+
+Because rep agent has \alertbf{recursive utility}, they care not only about shocks to $realized$ consumption, but also about shocks to $expected$ consumption
+\begin{itemize}
+    \item With $\psi > \frac{1}{\gamma}$, they dislike fluctuations in expected consumption growth
+\end{itemize}
+
+~
+
+The fluctuations in expected consumption growth enter the SDF and make it more volatile without affecting observed interest rates or consumption volatility, allowing for a high risk premium in the model with a low risk-free rate
+
+\end{frame}
+
+\begin{frame}{Bansal and Yaron (2004) intuition}
+
+Additional tricks Bansal and Yaron (2004) use to help their model fit key moments:
+\begin{itemize}
+\item Postulate we don't observe consumption claim, equity market is claim to dividends $d_t$ satisfying:
+\begin{align*}
+\Delta d_{t+1} &= \mu_d + \phi x_t + \varphi_d \sigma_t u_{t+1} \\
+\Delta c_{t+1} &= \mu + x_t + \sigma_t \nu_{t+1}\\
+x_{t+1} &= \rho x_t + \varphi_e \sigma_t e_{t+1},
+\end{align*}
+where $u$, $\nu$, and $e$ are iid standard normal, $\phi>1$ and $\varphi_d > \varphi_e$. This essentially ``juices up'' anything we observe on the consumption side in the equity market size.
+\item Add time-varying volatility to help explain return predictability evidence (more on this in Lectures 4--5)
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Bansal and Yaron (2004) calibration results -- no stochastic vol}
+\begin{center}
+\includegraphics[width=0.75 \linewidth]{Images/by_2004_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Bansal and Yaron (2004) calibration results -- stochastic vol}
+\begin{center}
+\includegraphics[width=0.75 \linewidth]{Images/by_2004_2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Bansal, Kiku, and Yaron (2016): estimating LRR}
+Bansal, Kiku, and Yaron (2016) (``Risks For the Long Run: Estimation with Time Aggregation'')
+
+\begin{itemize}
+\item Model has 3 preference parameters and 10 cash flow process parameters
+\item They estimate model using GMM with 20 different moments from the asset pricing and consumption data
+\begin{itemize}
+\item Note these are \alertbf{not} Euler-equation moments as in Hansen and Singleton (1982)
+\item In my opinion, calibration-style moments great for estimating cash flow parameters, but should mix with Euler-equation-style moments to estimate preference parameters
+\item Think about it as a more-systematic calibration
+\end{itemize}
+\item They add a `time aggregation' parameter to reflect a difference between data sampling frequency (one year) and time horizon on which investors make decisions (33 days?)
+\begin{itemize}
+\item Seems to help model fit a lot!
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Bansal, Kiku and Yaron (2016) estimation}
+\begin{center}
+\includegraphics[width = 0.7\linewidth]{Images/bky_2016_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Bansal, Kiku and Yaron (2016) estimation}
+\begin{center}
+\includegraphics[width=0.5 \linewidth]{Images/bky_2016_2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Skeptical view of long-run risk}
+\begin{itemize}
+\item Empirical evidence primarily of the moment-matching or calibration variety
+\begin{itemize}
+\item Euler equation tests not nearly as successful
+\item Potential for `moment mining'
+\item Often still rejected
+\item Hard to know you've found global optimum with in 13-dimensional numeric optimization
+\end{itemize}
+\item Is $\psi > 2$ any more plausible than $\gamma > 10$?
+\begin{itemize}
+    \item Epstein, Farhi, and Strzalecki (2014): Bansal Yaron calibrations imply representative agent would give up ~25\% of expected consumption to have consumption uncertainty resolved immediately rather than later, holding fixed actual consumption volatility
+\end{itemize}
+\item Very hard to measure a small highly persistent component in consumption growth $x_t$ without an extremely long sample (Hansen, Heaton, and Li 2008)
+\begin{itemize}
+    \item How can investors be expected to include it in their valuations?
+\end{itemize} 
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Habit formation}
+Approach in Campbell and Cochrane (1999):
+\begin{itemize}
+\item Retain iid consumption process
+\item Make risk aversion time varying via \alertbf{habit formation} utility:
+\begin{itemize}
+\item Utility of consumption today measured in part relative to past consumption, rather than some absolute benchmark
+\item Can explain return predictability evidence
+\item Can result in larger risk premia for given risk aversion / consumption volatility because rep agent measures $c_t$ relative to much higher benchmark
+\end{itemize}
+\item Purely a time-varying price of risk story vs. time varying quantity of risk 
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Campbell Cochrane (1999)}
+Identical agents with utility function:
+\begin{align*}
+U_t = \E_t \sum_{j=1}^\infty \beta^j \frac{(C_{t+j}-X_{t+j})^{1-\gamma}}{1-\gamma}.
+\end{align*}
+Aggregate log consumption follows random walk:
+\begin{align*}
+\Delta c_{t+1} = \mu + \sigma_c \epsilon_{c,t+1},
+\epsilon_{c,t+1} \sim N(0,\sigma^2)
+\end{align*}
+\vskip 12pt
+`Habit' or `minimum consumption' process $X_t$ is only difference from the standard CRRA framework
+\end{frame}
+
+% \begin{frame}{Habit in Campbell Cochrane (1999)}
+% Define surplus consumption ratio $S_t$ as
+% $$S_t = \frac{C_t - X_t}{C_t}$$
+% If consumption is close to the habit level, the $S_t$ is more sensitive (higher volatility) with respect to changes in consumption:
+% \begin{itemize}
+% \item Since habit moves slowly, consumption will be close to habit in recessions because these
+% are characterized by low consumption growth
+% \item This leads to counter-cyclical volatility, dividend to price ratios, and risk premia
+% \end{itemize}
+
+% ~
+
+% Assume laws of motion for $X_t$ s.t. $s_t = \text{log}( S_t )$ follows
+% $$s_t = (1-\phi) \overline{s} + \phi s_t + \lambda(s_t) \sigma_c \epsilon_{c,t+1},$$
+% where $\lambda(s_t)$ is the state-dependent volatility of innovations in $s_t$. 
+% \end{frame}
+
+% \begin{frame}{Risk-free rate problem}
+% \alertbf{Issue}: If $s_t$ is high, it is expected to revert to its average
+% \begin{itemize}
+% \item[$\Rightarrow$] There is is substantial variation in the expected growth rate of $s_t$, which leads to large variation in the risk free rate (intertemporal substitution effect)
+% \item Early habit formation models (e.g., Constantinides 1990) had much too volatile risk free rates
+% \end{itemize}
+
+% ~ 
+
+% Campbell Cochrane (1999) solution:
+% \begin{itemize}
+% \item In their model, log risk-free rates satisfy
+% $$r_{f,t} = -\text{log}(\beta) + \gamma \mu + (1-\phi)( \overline{s}-s_t) - \frac{\gamma^2 \sigma_c^2 }{2} ( \lambda(s_t) + 1)^2$$
+% \item Simply choose $\lambda(s_t)$ so that risk-free rates are constant! $\Rightarrow$ empirical tests focus on mean not var of real risk-free rates
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}{Campbell Cochrane (1999) calibration}
+No analytic solutions available for total wealth or equity values/returns, solve numerically over grid of plausible $s_t$ with following parameters
+\begin{center}
+\includegraphics[width= 0.9\linewidth]{Images/cc_1999_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Campbell Cochrane (1999) moments}
+\begin{center}
+\includegraphics[width= \linewidth]{Images/cc_1999_2.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Campbell Cochrane (1999) conclusions}
+\alertbf{Good news:}
+\begin{itemize}
+\item Gets unconditional returns and variation in p/d ratio reasonably close
+\item Model works by having very high expected excess returns when surplus low
+\item Matches high Sharpe Ratio and risk premium on equities
+\item Time-varying risk aversion delivers the predictability related to the dividend-price ratio in the data
+\item Slowly time-varying discount rates give volatile equity returns
+\end{itemize}
+\alertbf{Bad news:}
+\begin{itemize}
+\item It implies very high risk aversion (average around 100)
+\item It is a conditional consumption CAPM: only shock is $\epsilon_{c,t+1}$
+\begin{itemize}
+\item More recent empirical debate focuses on testing this
+\end{itemize}
+\item Seem reverse-engineered to fit these moments, none of it feels over-identified
+\end{itemize}
+\end{frame}
+
+% \begin{frame}{Bansal, Kiku, and Yaron (2012): LRR $>$ Habit}
+% \begin{center}
+% \includegraphics[width=0.55 \linewidth]{Images/bky_2012_1.png}
+% \end{center}
+% \end{frame}
+
+\begin{frame}{Bansal, Kiku, and Yaron (2012): LRR $>$ Habit}
+\begin{center}
+\includegraphics[width=0.6\linewidth]{Images/bky_2012_2.png}
+\end{center}
+$R^2$ from regression $p_{t+1}-d_{t+1} = \alpha_0 + \sum_{j=1}^L \alpha_j \Delta c_{t+1-j} + u_{t+1}$ for different of $L$
+\end{frame}
+
+
+\begin{frame}{Campbell and Cochrane (2000)}
+\begin{center}
+\includegraphics[width= 0.9\linewidth]{Images/cc_2000_1.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Campbell and Cochrane (2000) defense of consumption-based asset pricing}
+\begin{quote}
+``all current asset pricing models are derived as specializations of the consumption-based model rather than as alternatives to it. All current models predict that expected returns should line up against covariances of returns with some function of consumption (possibly including leads and lags).''
+\end{quote}
+
+~ 
+
+In notation of our class,
+$$m_{t+1} = \beta \E_t \frac{U'(C_{t+1})}{U'(C_t)}$$
+\textit{must} be true for any agent at an interior solution of consumption and investment decisions. Just need better models of utility function, better data, more focus on right kinds of agents, etc.
+\end{frame}
+
+
+\begin{frame}{Cambpell and Cochrane (2000) discussion}
+    
+\end{frame}
+
+\begin{frame}{Heterogeneous agents}
+Income and consumption of households are \alertbf{more volatile} than aggregates. Can this help explain asset-pricing puzzles?
+
+~
+
+Households often appear to be at \alertbf{corner solutions} in asset holdings (no investment in many assets) Why?
+Can this help explain asset-pricing puzzles?
+
+~
+
+Investor heterogeneity introduces two problems for researchers
+\begin{enumerate}
+\item Modeling difficulties: keeping track of agents, income, consumption, trading
+\item Data difficulties: multiple sources that do not line up, substantial noise
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Heterogeneous agents: early results not good}
+Early theoretical results showed this case often collapses onto rep agent case in terms of asset pricing implications:
+
+\begin{itemize}
+\item If shocks are transitory, agents can smooth them out using:
+\begin{itemize}
+\item Borrowing/lending at risk-free rate (Telmer, 1993)
+\item Long positions in lending, stock markets (Lucas, 1994)
+\item Even with reasonable txn costs (Heaton and Lucas, 1996)
+\end{itemize}
+
+~
+
+\item Only theories that work have permanent, non-diffusive idiosyncratic shocks, e.g. Constantinides and Duffie (1996) 
+
+\begin{itemize}
+\item Empirical problems: not enough x-sectional variance in consumption growth, this variance appears unrelated to market return (Cogley, 2002)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Brav, Constantinides, and Geczy (2002)}
+Brav, Constantinides, and Geczy (2002) use an unweighted average of \alertbf{household-level SDFs} directly in CRRA model:
+\begin{align*}
+\E_t \left[ \left( \frac{1}{N} \sum_{i=1}^N \beta \left( \frac{C_{i,t+1}}{C_{i,t}} \right)^{-\gamma} \right) R_{t+1} \right] = 1
+\end{align*}
+based on household-level consumption data.
+
+~
+
+Authors face large problem: noise in $C_t$ raised to power $-\gamma$ in empirical SDF
+\begin{itemize}
+\item Use 3rd order Taylor expansion of individual SDF to reduce effect of noise
+\item Find $\gamma$ of 3 to 5 fits equity premium, value premium
+\item Weird result, given rest of literature; maybe driven by Taylor expansion procedure? (2nd order expansion $\Rightarrow$ different result)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Rare disasters}
+What if consumption-based models are correct for reasonable values of $\gamma$, but we are mis-estimating true consumption volatility and/or risk premia?
+\begin{itemize}
+\item Large standard errors on all these point estimates 
+\item What if rare disasters (once in every 50 years?) have a substantial impact on the variance of consumption growth and stock returns, but may be underrepresentated in data
+\begin{itemize}
+\item Introduced in Rietz (1988)
+\item \alertbf{Concern 1}: in major real consumption disasters, government likely to default as well, meaning this type of risk premia should be reflected in long-term bonds, but empirically there is still a big equity premia incremental to the long-term treasuries
+\item \alertbf{Concern 2}: put-protected equity portfolio still earns large Sharpe ratio
+\item Barro (2006, 2008) calibrate a rare-disaster model using large panel of international data, argue that given observed sovereign default and recovery rates, disaster risk resolves the equity premium puzzle with  low(ish) long-term government yields
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Measurement error}
+Key magnitudes for consumption-based asset pricing:
+\begin{itemize}
+\item Contemporaneous covariance between asset returns and consumption growth
+\item Volatility of consumption growth
+\item Predictability of consumption growth
+\end{itemize}
+
+~
+
+Method used to measure consumption distorts these moments
+\begin{itemize}
+\item Asset returns measured point to point; consumption smoothed out over time
+\item Same for other macro variables (GDP, income)
+\item See Working (1960) for math, Grossman, Melino, and Shiller (1987) for asset pricing implications
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Problems with consumption data}
+\alertbf{Measurement error}
+\begin{itemize}
+\item Most consumption data comes surveys of retailers
+\item Allocation into nondurables, services, durables somewhat arbitrary
+\item Relative prices also based on surveys
+\item Adjusting consumption in response to information takes time
+\item Should consumption-based asset pricing model work for daily returns?
+\end{itemize}
+
+~
+
+\alertbf{Potential solution in Savov (2011): garbage!}
+% \begin{itemize}
+% \item Not smoothed out by reporting process
+% \item Not self-reported
+% \item Not sensitive to prices (measured in tons not \$!)
+% \end{itemize}
+\end{frame}
+
+% \begin{frame}{Savov (2011)}
+% \begin{center}
+% \includegraphics[width= \linewidth]{Images/s_2011_1.png}
+% \end{center}
+% \end{frame}
+
+% \begin{frame}{Savov (2011)}
+% \begin{center}
+% \includegraphics[width= \linewidth]{Images/s_2011_2.png}
+% \end{center}
+% \end{frame}
+
+\begin{frame}{Consumption-based asset pricing summary}
+Literature is huge, but in most cases use calibration, not Euler-equation tests (which mostly reject models) and cross-sectional tests (for which reduced-form factors outperform)
+\begin{quote}
+``All models can be rejected, and the more important issue is which approximate models are most useful.'' -- Campbell and Cochrane (2000)
+\end{quote}
+
+~
+
+While I agree, consumption-based models have proven less useful to both academics and practitioners
+
+~
+
+An empirically-useful, intuitively satisfying, preference-based model of aggregate risk premia and risk-free rates would be revolutionary in asset pricing and macroeconomics, but remains elusive
+\end{frame}
+
+
+\end{document}

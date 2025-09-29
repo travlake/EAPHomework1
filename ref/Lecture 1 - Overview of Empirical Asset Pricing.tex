@@ -1,0 +1,802 @@
+
+\documentclass[xcolor=table, aspectratio=169]{beamer}
+
+\title[Overview of Empirical Asset Pricing]{Fin 395 4 Lecture 1: \\ Overview of Empirical Asset Pricing}
+\author[Empirical Asset Pricing (Johnson)]{Professor Travis Johnson \\ The University of Texas at Austin \vspace{10pt} \\ Handouts: Syllabus, Lecture Notes, papers for next time}
+\date{8/27/2025}
+
+\mode<presentation> {
+\usetheme{Singapore}
+%\usecolortheme{beaver}
+% or g...
+\setbeamercovered{transparent}
+% or whatever (possibly just delete it)
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{headline}{}
+\usefonttheme{professionalfonts}
+
+\definecolor{schoolcolor1}{RGB}{191,87,0}
+\definecolor{schoolcolor2}{RGB}{255,255,255}
+\definecolor{alertschoolcolor}{RGB}{191,87,0}
+
+\setbeamercolor{alerted text}{fg=alertschoolcolor}
+\setbeamercolor*{palette primary}{fg=schoolcolor2,bg=schoolcolor1}
+\setbeamercolor*{palette secondary}{fg=white,bg=schoolcolor2}
+
+\setbeamercolor*{sidebar}{fg=white,bg=black}
+
+\setbeamercolor*{palette sidebar primary}{fg=schoolcolor1!10!black}
+\setbeamercolor*{palette sidebar secondary}{fg=white}
+\setbeamercolor*{palette sidebar tertiary}{fg=schoolcolor1!50!black}
+\setbeamercolor*{palette sidebar quaternary}{fg=gray}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+\setbeamercolor{frametitle}{fg=schoolcolor2,bg=schoolcolor1}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+\setbeamercolor{itemize item}{fg=schoolcolor1,bg=white}
+\setbeamercolor{itemize subitem}{fg=schoolcolor1,bg=white}
+\setbeamercolor{enumerate item}{fg=schoolcolor1,bg=white}
+
+
+%\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+% \setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+\setbeamertemplate{itemize subitem}[triangle]
+}
+
+\usepackage{multicol}
+\usepackage{bigstrut}
+\usepackage{multirow}
+\usepackage{verbatim}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage{etex}
+\usepackage[all]{xy}
+\usepackage{eurosym}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{chronology}
+\usepackage{booktabs}
+
+%\usepackage{handoutWithNotes}
+%\usepackage{pdfpages}
+%\usepackage{xy}
+
+%\pgfpagesuselayout{1 on 1 with notes}[letterpaper,border shrink=25mm]
+
+\definecolor{lightgray}{gray}{0.9}
+
+%\newtheorem{definition}{Definition}
+
+\usetikzlibrary{arrows,positioning} 
+\tikzset{
+    %Define standard arrow tip
+    >=stealth',
+    %Define style for boxes
+    punkt/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           %text width=8.5em,
+           minimum height=2em,
+           text centered},
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick,
+           shorten <=2pt,
+           shorten >=2pt,}
+}
+
+\newcommand*\oldmacro{}%
+\let\oldmacro\insertshorttitle%
+\renewcommand*\insertshorttitle{%
+  \oldmacro\hfill%
+  \insertframenumber}
+
+%%\def\arraystretch{0.9}
+\setlength{\tabcolsep}{2.5pt}
+\setbeamercovered{transparent}
+
+\setlength{\leftmargini}{0.5cm}
+\setlength{\leftmarginii}{0.5cm}
+
+\begin{document}
+\begin{frame}
+  \titlepage 
+\end{frame}
+
+
+\section{Course Overview}
+\subsection{Objectives and outline}
+\begin{frame}{Course objective}
+\begin{quote}
+This course is an in-depth study of empirical work in asset pricing, including econometric and statistical methods. The focus is on the fundamental economic questions in asset pricing, how to answer them empirically, what answers are in existing research, and what we still don't know. The course should prepare you to understand and produce cutting-edge empirical asset pricing research.
+\end{quote}
+\end{frame}
+
+\subsection{Materials}
+\begin{frame}{Course materials}
+\begin{itemize}
+\item I'll provide printed copy of lecture notes in each class
+\item Textbooks: 
+\begin{itemize}
+\begin{small}
+\item \textit{The Econometrics of Financial Markets} by John Campbell, Andrew Lo, and Craig MacKinley, ISBN 0691043019
+\item \textit{Empirical Dynamic Asset Pricing: Model Specification and Econometric Assessment} by Kenneth Singleton, ISBN  0691122970
+\item \textit{Asset Pricing} by John Cochrane, ISBN 0691121370
+\end{small}
+\end{itemize}
+\item You will need access to the data available via Wharton Research Data Services (WRDS)
+\end{itemize}
+\end{frame}
+
+\subsection{Homework}
+\begin{frame}{Homework assignments}
+30\% of your grade is based on four homework assignments, each due three weeks after I assign them
+\begin{itemize}
+\item Mix of problem solving, data analysis, and some replication of existing research
+\item Your solutions should be typed up (ideally in LaTeX) and should explain your answers like you would in a paper -- including tables and figures when appropriate
+\item Will require coding and estimation, I recommend Matlab, R, or Python (SAS and STATA won't work for many problems)
+\item Use of AI tools is \textbf{strongly encouraged}, the scope of these assignments is huge
+\begin{itemize}
+    \item They will take approximately 15--20 hours, assuming AI assistance
+    \item Questions written to be intentionally ambiguous and require you to think through what methodologies should be used, what data you might need, etc.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Participation, presentation, exams}
+10\% of your grade is based on contribution to class discussions
+\begin{itemize}
+\item Read required papers and book chapters -- I cold call!
+\item Ask questions!
+\end{itemize}
+\vskip 8pt
+10\% is based on an in-class presentation
+\begin{itemize}
+\item Present one of the reading list papers that is \textbf{not} required
+\item 30 minutes, including questions and discussion
+\end{itemize}
+\vskip 8pt
+20\% is based on an in-class midterm exam
+\begin{itemize}
+    \item Hand-written, one page of notes only
+\end{itemize}
+\vskip 8pt
+30\% is based on an interview-style exam
+\begin{itemize}
+\item 30 minutes per student, held during finals week
+\item More details on Syllabus and later in semester
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{Discussion}
+
+What do regression standard errors mean?
+
+\end{frame}
+
+
+\section{Stochastic Discount Factors}
+\subsection{Theory}
+\begin{frame}{Asset pricing}
+What determines the price today of an asset promising future financial payments that may be risky?
+\begin{align*}
+\text{Future payments: }& x_{t+1}, x_{t+2}, \cdots, \infty \\
+\text{Price: }& p_t( \text{moments of } x_{t+s} \text{ } \forall \text{ } s, \text{time } t \text{ information} )
+\end{align*}
+\vskip -4pt
+\begin{enumerate}
+\item What is the distribution of future payments? 
+\begin{itemize}
+\item Depends on type of contract (equity? debt? etc) as well as economics of the promising entity (firm, government, etc)
+\end{itemize}
+\vskip 8pt
+\item What is present value of these payments?
+\begin{itemize}
+\item Discount for time value of money and risk
+\end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Stochastic discount factor}
+What is the price at time $t$ of an asset paying $x_T$ at time $T > t$?
+
+\begin{itemize}
+\item $I_t$: Investors' information set at $t$ $\equiv$ set of all random variables investors know the realization of at $t$
+\item Securities and portfolios with payoffs $x_T \in X_T$, $X_T \in I_T$
+\item Prices $p_t(x_T) \in I_t$
+\end{itemize}
+\begin{definition}
+A \textbf{stochastic discount factor} (SDF, or pricing kernel) at time $t$ for payoffs at time $T$ is a random variable $m_T$ that satisfies $p_t = \mathbb{E}\left( m_T x_T \middle\vert I_t \right)$ $\forall$ $x_T \in X_T$
+\end{definition}
+
+\vskip 8pt
+
+SDFs discount future cash flows, are random because investors value payoffs differently in different states of the world
+\end{frame}
+
+\begin{frame}{Power of SDFs}
+SDFs, if we can find them, are \textbf{extremely} powerful
+\begin{itemize}
+\item Tells you the price of any asset given distribution of $x_T$
+\item Tells you expected return $\mathbb{E}_t(R_T) = \mathbb{E}_t\left(\frac{x_T}{p_t}\right)$
+\end{itemize}
+\begin{small}
+\begin{align*}
+p_t &= \mathbb{E}_t \left( m_T x_T \right) \\
+1 &= \mathbb{E}_t \left( m_T \frac{x_T}{p_t} \right) \\
+&= \mathbb{E}_t \left( m_T R_T \right) = \mathbb{E}_t \left( m_T \right) \mathbb{E}_t \left( R_T \right) + \text{cov}_t \left( m_T,R_T \right) \\
+\\
+\Rightarrow \mathbb{E}_t \left( R_T \right) - R_f &= - R_f \text{cov}_t \left( m_T,R_T \right) \\
+R_f &\equiv \frac{1}{\mathbb{E}_t \left( m_T \right)}
+\end{align*}
+\end{small}
+\end{frame}
+
+\begin{frame}{Existence of SDF and LOOP}
+We now consider for what pairs of payoff spaces $X_T$ and prices $p_t$ there exists a stochastic discount factor
+\vskip 12pt
+\begin{definition}
+\textbf{Law of one price} (LOOP):
+ $p_t(a_t x_{1,T} + b_t x_{2,T}) = a_t p_t(x_{1,T}) +  b_t p_t(x_{2,T})$, for any $a_t, b_t \in I_t$ and $x_{1,T}, x_{2,T} \in X_T$
+\end{definition}
+
+\begin{theorem}
+Law of one price $\Leftrightarrow$ there exists a SDF $m_T \in I_T$
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}{Existence of SDF and No arbitrage}
+\begin{definition}
+\textbf{No arbitrage}: For any $x_T \in X_T$ with $\mathbb{P}(x_T \geq 0) = 1$, we have $\mathbb{P}( p_t(x_T) \leq 0 \; \& \; x_T > 0 ) =0$
+\end{definition}
+\vskip 12pt
+\begin{theorem}
+No arbitrage $\Leftrightarrow$ there exists a SDF $m_T \in I_T$ such that $\mathbb{P}(m_T > 0) = 1$
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Unique SDF in space of payoffs}
+\begin{itemize}
+\item Let payoff space be generated by $N \times 1$ vector of basis payoffs $Y_T$: $X_T = \left\lbrace c_t'Y_T \right\rbrace$, $c_t \in I_t$, $Y_T \in I_T$
+\begin{itemize}
+\item $Y_T$ are payoffs of all individual (non-redundant) investments, $x_T \in X_T$ is payoff of specific a portfolio of investments
+\item By LOOP, if we can price $Y_T$ we can price all $x_T \in X_T$ as well
+\end{itemize}
+\item Look for SDF $m_T^* \in X_T$, i.e. $m_T^* = w'_t Y_T$ s.t.
+\begin{align*}
+p_t(Y_T) & = \mathbb{E} \left( m_T^* Y_T \mid I_t \right) \\
+&= \mathbb{E} \left( w_t'Y_T Y_T'  \mid I_t \right) =  \mathbb{E} \left( Y_T Y_T' \mid I_t \right) w_t
+\end{align*}
+\item This implies $w_t = \left( \mathbb{E} \left( Y_T Y_T' \mid I_t \right) \right)^{-1} p_t(Y_T)$ and so
+$$m_T^* = p_t(Y_T)' \left( \mathbb{E} \left( Y_T Y_T' \mid I_t \right) \right)^{-1} Y_T$$
+\item {\small Note that $m_T^* = \mathbb{E} \left( m_T Y_T \mid I_t \right)' \mathbb{E} \left( Y_T Y_T' \mid I_t \right)^{-1} Y_T$ $= \text{proj}_t(m_T \vert X_T)$ for any SDF $m_T$}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{SDF portfolio properties}
+The $m_T^*$ derived on the previous page has the following properties:
+\begin{enumerate}
+\item Unique regardless of how many SDFs $m_T$ there are
+\item Can be written in return space as:
+\begin{align*}
+m_T^* &= \dot{w}_t' R_T \\
+\dot{w}_t &\equiv \left( \mathbb{E} \left( R_T R_T' \mid I_t \right) \right)^{-1} \mathbf{1}_N
+\end{align*}
+where $R_T \equiv \frac{Y_T}{p_t(Y_T)}$ are the returns of the basis payoffs
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{SDFs and Sharpe Ratio}
+Define $S_T$ as the returns of the risky basis payoffs (unlike $R_T$, no risk-free) and $v_t$ as the elements of $\dot{w}_t$ corresponding to $S_T$
+\begin{align*}
+m_T^* = \text{constant} + v_t' S_T
+\end{align*}
+Portfolio ``msr'' with weights $\frac{v_t}{\sum v_t}$ has highest possible Sharpe Ratio:
+$$\frac{\vert \mathbb{E}(R_{x,T}) - R_f \vert}{\sigma(R_{x,T})} \leq \frac{ \vert \mathbb{E}(R_{msr,T}) - R_f \vert }{\sigma(R_{msr,T})} = R_f \sigma(m_T^*),$$ 
+where $R_{x,T} \equiv \frac{x_T}{p_t(x_T)}, x_T \in X_T$ and $R_{msr,T} = \frac{v_t'}{\sum v_t} S_T$ 
+\end{frame}
+
+\begin{frame}{Single factor beta representation}
+As long as an SDF exists, $\forall \: x_T \in X_T$,
+\begin{align*}
+\mathbb{E}(R_{x,T}) &= R_f + \beta_{x,msr} \left( \mathbb{E}(R_{msr,T}) - R_f \right) \\
+\beta_{x,msr} &= \frac{\text{cov}(R_{x,T},R_{msr,T})}{\text{var}(R_{msr,T})}
+\end{align*}
+Portfolio with maximum Sharpe Ratio prices all portfolios
+\begin{itemize}
+\item Requires almost no assumptions (just no arbitrage)
+\item CAPM intuition summarizes all of asset pricing theory
+\end{itemize}
+Differentiating prediction of CAPM: market portfolio has maximum Sharpe Ratio 
+\begin{itemize}
+\item Can test this!
+\end{itemize}
+Differentiating prediction of other AP theories: other portfolio has max SR
+\begin{itemize}
+\item Can also test this!
+\end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Discussion}
+
+Why does maximum Sharpe Ratio portfolio matter so much even when investors do not have mean-variance preferences?
+
+\end{frame}
+
+\begin{frame}{Number of stochastic discount factors}
+\begin{itemize}
+\item \textbf{Complete market}: $m_T$ is unique
+$$m_T = m_T^*$$
+\item \textbf{Incomplete market}: infinite different $m_T$
+$$m_T = m_T^* + \epsilon_T \text{, where } \mathbb{E}\left( \epsilon_T x_T \mid I_t \right) = 0 \text{ and } \mathbb{E}\left( \epsilon_T \mid I_t \right) = 0$$
+\item Economic content of asset pricing models is the restrictions that they place on $m_T$
+\end{itemize}
+\end{frame}
+
+\subsection{Preference-based restrictions}
+
+\begin{frame}{Preference-based restrictions}
+\textbf{Example}
+\begin{itemize}
+\item Consider an economy with an investor having time-separable VNM-utility and consumption $c_t$. The investor maximizes
+$$\mathbb{E} \left( \sum_{i=0}^\infty \beta^i U \left(c_{t+i} \right) \middle\vert I_t \right)$$
+\item In equilibrium, the agent's first-order condition implies
+$$m_T = \beta^{T-t} \frac{U'(c_T)}{U'(c_t)}$$
+\item In words, SDF is intertemporal marginal rate of substitution for \textit{all} agents, even if they have different utility functions
+\begin{itemize}
+\item Different consumption and portfolio choices allow them all to have same IMRS even when they start with different endowments/preferences
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Consumption-based models and factor models}
+\textbf{Representative agent consumption-based models}
+\begin{itemize}
+\item $c_t$ is aggregate consumption, $U()$ is representative utility function, portfolio choice = market portfolio
+\item Lecture 2
+\end{itemize}
+\textbf{Factor models}
+\begin{itemize}
+\item The fact that 
+$$m_T \text{ prices all } x_T \in X_T \iff \text{proj}(m_T \vert X_T) \text{ prices all } x_T \in X_T$$
+can be used to specify the SDF as a function of asset payoffs (``mimicking portfolios'')
+\begin{itemize}
+\item CAPM and related models
+\item Ad-hoc factor models
+\end{itemize}
+\item Lectures 6--7
+\end{itemize}
+\end{frame}
+
+\subsection{No-arbitrage restrictions}
+
+\begin{frame}{No-arbitrage restrictions}
+\textbf{Motivation}
+\begin{itemize}
+\item Modeling preferences is difficult, strong assumptions are needed for existence of representative agent, etc. Can we instead get some mileage just from no arbitrage?
+\item No-arbitrage follows from minimal assumptions on preferences (increasing utility function)
+\item We can always ``price'' asset payoffs using $m_T^*$, but this is almost a tautology
+\item Goal: find a more parsimonious specification of the SDF using only a subset of $Y_T$
+\begin{itemize}
+\item Maybe one that only prices a subset of $X_T$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{No-arbitrage restrictions -- Stocks}
+\textbf{Arbitrage Pricing Theory} (Ross 1976)
+\begin{itemize}
+\item Assume a factor structure: Payoff on asset $i$ depends on a ``small'' number of factors $f_T \in X_T$
+$$x_{i,T} = a_{i,t} + \beta'_{i,t} f_T + \epsilon_{i,T}$$
+where $\mathbb{E} \left( \epsilon_{i,T} \middle \vert I_t \right) = \mathbb{E} \left( \epsilon_{i,T} f_T \middle \vert I_t \right) = \mathbb{E} \left( \epsilon_{i,T} \epsilon_{j,T} \middle \vert I_t \right) = 0$ for $i\neq j$
+\item Apply LOOP:
+$$p_t(x_{i,T}) = p_t(a_{i,t}) + \beta_{i,t}' p_t(f_T) + p_t(\epsilon_{i,T})$$
+\item Let $\hat{f}_T = [ 1 \hspace{8pt} f_T ]$. Under the factor structure assumption, $\hat{f}_T$ are the basis payoffs that span the ``systematic'' (not-$\epsilon_{i,T}$) component of the payoffs in $X_T$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{No-arbitrage restrictions -- Stocks}
+Let $f_T^* = p_t(\hat{f}_T)' \mathbb{E} \left( \hat{f}_T'\hat{f}_T \middle\vert I_t \right)^{-1} \hat{f}_T$
+\begin{itemize}
+\item Prices $f_T$ and $1$ by construction
+\end{itemize}
+\vskip 8pt
+Perfect factor structure: $\epsilon_{i,T} = 0$
+\begin{itemize}
+\item $f_T^*$ prices all $x_{i,T}$ since $\hat{f}_T$ spans $X_T$
+\end{itemize}
+\vskip 8pt
+Approximate factor structure: $\epsilon_{i,T} \neq 0$
+\begin{itemize}
+\item \textbf{APT}: consider limit as number of assets $N \rightarrow \infty$ and portfolios $w_t'x_t$ satisfying
+$$\lim_{N \rightarrow \infty} \text{max}(w_t) = 0$$
+\item Under some conditions, idiosyncratic risk of the portfolio $\text{Var} \left( w_t'\epsilon_T  \middle\vert I_t \right) \rightarrow 0$ and $f_T^*$ prices these portfolios as well
+\end{itemize}
+\end{frame}
+
+\begin{frame}{No-arbitrage restrictions -- Stocks}
+\textbf{Problem:} APT only works for assets/portfolios with \textbf{no} idiosyncratic risk
+\begin{itemize}
+\item If portfolio $i$ has $\text{Var} \left( \epsilon_{i,T} \middle\vert I_t \right) > 0$ any SDF $m_T = f_T^* + k\epsilon_{i,T}$, for any $k$, prices all the factors but predicts different $p_t(x_{i,T})$
+\end{itemize}
+\begin{align*}
+p_t(x_{i,T}) &= \mathbb{E} \left( (f_T^* + k \epsilon_{i,T}) x_{i,T} \middle\vert I_t \right) \\
+&= \mathbb{E} \left( f_T^* (a_{i,t} + \beta_{i,t}'f_T) \middle\vert I_t \right) + k \mathbb{E} \left( \epsilon_{i,t}^2 \middle\vert I_t \right)
+\end{align*}
+\vskip -8pt
+\begin{itemize}
+\item Not true in real world since even huge portfolios have risk unspanned by typical factor structure
+\item Without any further restrictions, all APT says is we only need to price non-redundant assets -- no economic content
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}{No-arbitrage restrictions -- Stocks}
+\textbf{State of the APT literature for stocks:}
+\begin{itemize}
+\item Lots of research in 1980s, but now largely abandoned
+\item Often cited as informal motivation for ad-hoc linear models in empirical studies of stock returns (Lecture 7)
+\begin{itemize}
+\item Clear from above argument that APT without preference-based restrictions doesn't make any economic predictions
+\end{itemize}
+\item Fama has called the APT a ``factor fishing license''
+\end{itemize}
+\vskip 8pt
+\textbf{Not a focus of this course}
+\end{frame}
+
+\begin{frame}{No-arbitrage restrictions -- Bonds}
+\begin{itemize}
+\item Riskless payoff of a zero-coupon bond maturing at $T$: $x_{i,T}=1_s$
+$$p_t(1_T) = \mathbb{E} \left(m_T \middle\vert I_t \right)$$
+\item Combining many different maturities $T$, the observed zero-coupon bond prices $p_t(1_T)$ tell the entire path of future expected SDFs
+\begin{itemize}
+\item This works as long as there's no arbitrage
+\item Get more mileage out of NA here since there's no cash-flow risk
+\end{itemize}
+\item Much of the bond pricing literature has searched for a parsimonious statistical specification of the SDF consistent with no arbitrage and then use $\text{proj}\left( m_s \vert X \right)$ in pricing
+\item Recently, focus has shifted somewhat to finding connections between the SDF and macro variables
+\item Term structure literature -- Lecture 11
+\end{itemize}
+\end{frame}
+
+\begin{frame}{No-arbitrage restrictions -- Derivatives}
+\begin{itemize}
+\item \textbf{Example}: forward contract to buy an asset that delivers payoff $x_{i,T}$ at time $T$, where price $F$ is also paid at time $T$
+\item No arb: $p_t(x_{i,T}-F) = 0 \Leftrightarrow p_t(x_{i,T}) - p_t(1_T)F = 0$, and so
+$$F = \frac{p_t(x_{i,T})}{p_t(1_T)}$$
+\item Payoff of forward contract is redundant (replicate with spot and riskless bond), and therefore no arb has powerful implications
+\item Pricing of options and other derivatives follows same logic, but the arbitrage portfolio is more complicated
+\end{itemize}
+\end{frame}
+
+{
+\setbeamercolor{background canvas}{bg=schoolcolor1}
+\begin{frame}
+\begin{center}
+\large{
+\textcolor{white}{BREAK}    
+}
+\end{center}
+\end{frame}
+}
+
+\section{Return Autocorrelation}
+
+\subsection{Theory}
+\begin{frame}{Are returns predictable?}
+Define (gross) returns as
+$$R_{T} = \frac{x_{T}}{p_t(x_T)}$$
+Lots of research in asset pricing has investigated the null hypothesis
+$$\mathbb{E} \left(R_{t+k} \middle\vert I_t \right) = \mu_k \hspace{2pt} \forall \hspace{2pt} t, \hspace{12pt} k>0$$
+\begin{itemize}
+\item One notion of ``informational efficiency'' (Fama, 1970)
+\item Different ``informational efficiency'' concepts depending on specification of information set $I_t$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Are returns predictable?}
+Motivations for $\mathbb{E} \left(R_{t+k} \middle\vert I_t \right) = \mu_k$ hypothesis
+\begin{itemize}
+\item Risk-free rate, quantity of risk, and price of risk all constant
+\begin{align*}
+\mathbb{E}(R_{t+1} \vert I_t) &= R_{f,t} + \underbrace{\beta_{r,msr}}_{\text{risk}} \underbrace{\left( \mathbb{E}(R_{msr,t+1} \mid I_t) - R_{f,t} \right)}_{\text{risk premium}}, \text{ or}\\ 
+\mathbb{E}(R_{t+1} \vert I_t)&= R_{f,t} - R_{f,t} \underbrace{\frac{\text{cov}(R_{t+1},m_{t+1} \mid I_t)}{\text{var}(m_{t+1} \mid I_t)}}_{\text{risk}} \underbrace{{\text{var}(m_{t+1} \mid I_t)}}_{\text{risk premium}} 
+\end{align*}
+\item With time-varying risk-free rate, can also consider hypothesis that $\mathbb{E} \left(R_{t+k} \middle\vert I_t \right) - R_{f,t} = \mu_k$
+\begin{itemize}
+\item Requires that max. Sharpe Ratio portfolio has constant risk premium even as $R_{f,t}$ varies
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Random walk hypothesis}
+To test $\mathbb{E} \left( r_{t+k} \mid I_t \right) = \mu_k$ hypothesis
+\begin{itemize}
+\item We must specify the information set we want to condition on
+\begin{itemize}
+\item For example, \textbf{random walk} (with drift) hypothesis
+$$\mathbb{E} \left( r_{t+1} \mid r_t, r_{t-1}, \ldots \right) = \mu,$$
+\end{itemize}
+\item We must also specify a parametric model that gives the functional form of $\mathbb{E} \left( r_{t+k} \mid I_t \right)$ 
+\begin{itemize}
+\item For example could assume a linear relation between past and future returns, meaning we only need to test $\text{proj}(r_{t+k} \vert r_t) = \mu$
+\begin{footnotesize}
+\vskip -4pt
+$$r_{t+k} = \alpha + \rho(k) r_t + \epsilon_{t,k}$$
+\vskip -8pt
+$$\begin{array}{cc} H_0: & \rho(k) = 0 \end{array}$$
+\end{footnotesize}
+\vskip -4pt
+\item Can use GMM w/moments $\mathbb{E}\left(\epsilon_{t+k}\right) = 0$ and $\mathbb{E}\left( \epsilon_{t+k} r_t \right)=0$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Autocorrelation estimator}
+
+\begin{frame}{Autocorrelation estimator}
+Let $\dot{r}_t = [ 1 \hspace{4pt} r_t ]'$, $\delta = [ \alpha \hspace{4pt} \rho(k) ]'$, and denote an estimate from sample with size $N$ with a $N$ subscript. Consider the OLS estimate:
+$$\delta_N = \mathbb{E}_N \left( \dot{r}_t \dot{r}_t' \right)^{-1} \mathbb{E}_N \left( \dot{r}_t r_{t+k} \right)$$
+Standard GMM results tell us this is a consistent estimate with asymptotic distribution
+\begin{align*}
+& \sqrt{N} (\delta_N - \delta) \overset{a}{\sim} N(0,\Omega) \\
+& \Omega = \mathbb{E}_N \left( \dot{r}_t \dot{r}_t' \right)^{-1} \mathbb{E}_N \left( \epsilon_{t+k}^2 \dot{r}_t \dot{r}_t' \right) \mathbb{E}_N \left( \dot{r}_t \dot{r}_t' \right)^{-1}
+\end{align*}
+If we assume conditional homoskedasticity, $\mathbb{E} \left( \epsilon_{t+k}^2 \mid r_t \right) = \sigma^2$, we get $\Omega = \mathbb{E}_N \left( \dot{r}_t \dot{r}_t' \right)^{-1} \sigma^2$, which implies
+$$\text{Var}\left( \rho(k)_N \right) = \frac{1}{N}$$
+\end{frame}
+
+\subsection{Bias}
+\begin{frame}{Finite-sample bias of the AC estimator}
+Kendall (1954) shows that under the null hypothesis, we have
+$$\mathbb{E}(\rho(k)_N) = -\frac{1}{N} + O(N^{-2})$$
+For an AR(1) process, 
+$$\mathbb{E}(\rho(1)_N) = -\frac{1+3\rho(1)}{N} + O(N^{-2})$$
+Unbiasedness of OLS, when mean is unknown, requires strict exogeneity, i.e. $\text{Cov}\left(\epsilon_s,r_t\right) = 0$ for $s,t = 1, \cdots N$
+\begin{itemize}
+\item Here, mechanical correlation between $\epsilon_{t-k,k}$ and $r_t$
+\end{itemize}
+First-order bias-correction under the null
+$$\tilde{\rho}(k)_N = \rho(k)_N + \frac{1}{N}$$
+\end{frame}
+
+\begin{frame}{Intuition for bias}
+In a finite sample, need to estimate mean $\mu$ as well as $\rho$
+\begin{itemize}
+    \item $\hat{\rho}$ depends on $\hat{\mu}$
+    \item OLS $\hat{\mu}$ happens to produce the smallest possible $\hat{\rho}$
+\end{itemize}
+
+~
+
+If you have a panel of data with $N$ periods and $M$ firms (or other independent chunks), letting $M \rightarrow \infty$ does \textbf{not} help
+\begin{itemize}
+    \item Autocorrelation coefficient with firm (or chunk) fixed effects is the average of the within-firm autocorrelation estimates, each having only $N$ observations and so downward biased
+    \item Need $N \rightarrow \infty$ to eliminate bias
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Implications of bias}
+Asset pricing:
+\begin{itemize}
+    \item Because bias is $\frac{1}{N}$ under zero-correlation null, irrelevant for high-frequency datasets (e.g. intraday or daily) with large $N$
+    \item When studying lower-frequency returns, e.g. yearly or longer, can be substantial
+    \item Leads to bias in time-series return predictability regressions (Lectures 4--5)
+\end{itemize}
+
+~
+
+Other fields:
+\begin{itemize}
+    \item Biases against finding ``hot hand'' when studying autocorrelation of outcomes within sporting events (this involves averaging a bunch of low-$N$ autocorrelation estimates)
+    \item Creates small-sample bias that can go either way when using panel data in corporate finance and innovations in RHS variable correlated with LHS variable (Grieser and Hadlock 2019)
+\end{itemize}
+
+\end{frame}
+
+
+% \begin{frame}{Finite-sample bias of the AC estimator}
+% We can get some intuition by assuming we know (without estimation) that $\text{Var}(r_t) = 1$, giving us $\rho(k)_N = \text{cov}_N(r_{t+k},r_t)$ and
+% \begin{align*}
+% \mathbb{E}(\rho(k)_N) &= \mathbb{E} \left[ \mathbb{E}_N \left[ \left(r_{t+k} - \mathbb{E}_N(r_t) \right) \left(r_t - \mathbb{E}_N(r_t) \right) \right] \right] \\
+% &= \mathbb{E} \left[ \mathbb{E}_N \left[ \left(r_{t+k} - \mu + \mu - \mathbb{E}_N(r_t) \right) \left(r_t - \mu + \mu - \mathbb{E}_N(r_t) \right) \right] \right] 
+% \end{align*}
+% Under the null, $\mathbb{E}\left[\mu (r_t-\mu+\mu - \mathbb{E}_N(r_t)) \right] = 0$, $\mathbb{E}\left[(r_{t+k}-\mu)(r_t-\mu)\right] = 0$, and so 
+% \begin{align*}
+% \mathbb{E}(\rho(k)_N) &= \mathbb{E} \left[ -2(r_{t+k}-\mu)\mathbb{E}_N(r_t) + (\mu - \mathbb{E}_N(r_t))^2 \right] \\
+% &= \mathbb{E} \left[ -\frac{2}{N}(r_{t+k}-\mu)r_{t+k} + (\mu - \mathbb{E}_N(r_t))^2 \right] \\
+% &= -\frac{2}{N} + \frac{1}{N} = -\frac{1}{N}
+% \end{align*}
+% i.e., the bias arises because we have to estimate $\mu$
+% \end{frame}
+
+\subsection{Joint statistics}
+
+\begin{frame}{Box-Pierce (1970) Q-statistic}
+Statistic to test the null hypothesis that first $j$ AC are jointly zero
+\begin{align*}
+Q(j) &= N \sum_{k=1}^j \rho(k)^2 \\
+H_0 &: Q(j) = 0
+\end{align*}
+Under null with $\mathbb{E} \left( \epsilon_{t+k}^2 \mid r_t \right) = \sigma^2$, since $\sqrt{N}(\rho(k)_N - \rho(k))$ are asymptotically standard normal, 
+$$Q_N(j) = N \sum_{k=1}^j \rho(k)_N^2 \overset{a}{\sim} \chi_j^2(j),$$
+where $\chi_j^2(j)$ means there are $N$ degrees of freedom
+\begin{itemize}
+\item Selection of $j$?
+\item Effect of selection of $j$ on power?
+\item Heteroskedasticity?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variance ratios}
+Alternative approach: examine $\text{Var} \left( \sum_{k=1}^j r_{t+k} \right)$
+\begin{itemize}
+\item Under null: $= \text{Var}(r_t) \cdot j$
+\item Positive $\rho$: $> \text{Var}(r_t) \cdot j$
+\item Negative $\rho$: $< \text{Var}(r_t) \cdot j$
+\end{itemize}
+Variance ratio statistic
+\begin{align*}
+VR(j) &= \frac{1}{j} \frac{\text{Var} \left( \sum_{k=1}^j r_{t+k} \right)}{\text{Var}(r_t)} - 1 \\
+H_0 &: VR(j) = 0
+\end{align*}
+Richardson and Smith (1994) show that 
+\begin{align*}
+VR(j)_N &= 2 \sum_{k=1}^{j-1} \frac{j-k}{j} \rho(k)_N
+\end{align*}
+\end{frame}
+
+\begin{frame}{Variance ratios}
+Recall that with $\mathbb{E} \left( \epsilon_{t+k}^2 \mid r_t \right) = \sigma^2$, $\sqrt{N}(\rho(k)_T - \rho(k)) \sim N(0,1)$ under the null. Since $\rho(k)_N$ and $\rho(k+i)_N$ are uncorrelated under the null and $VR(j)_N$ is a linear combination of $\rho(k)_N$,
+\begin{align*}
+&\sqrt{N} VR(j)_N \overset{a}{\sim} N(0,\Omega_{VR}) \\
+&\Omega_{VR} = 4 \sum_{k=1}^{j-1} \left( \frac{j-k}{j} \right)^2
+\end{align*}
+\begin{itemize}
+\item Can also stick to the GMM formulas that allow for conditional heteroskedasticity
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Long-run return regressions}
+Jegadeesh (1991), Hodrick (1992):
+$$r_{t+1} = \alpha + \delta(j) \left( \sum_{k=0}^{j-1} r_{t-k} \right) + \epsilon_{t+1}$$
+Richardson and Smith (1994) show that 
+$$\delta_N(j) = \frac{1}{j}\sum_{k=1}^j \rho_N(k) \frac{\text{Var}_N(r_t)}{\frac{1}{j} \text{Var}_N(\sum_{k=0}^{j-1} r_{t-k})} $$
+and, under the null,
+$$\delta_N(j) \rightarrow \frac{1}{j} \sum_{k=1}^j \rho_N(k), \text{ as } N \rightarrow \infty$$
+\end{frame}
+
+\begin{frame}{Summary of serial correlation tests}
+\begin{itemize}
+\item Thus, $Q_N(j)$, $VR_N(j)$, and $\delta_N(j)$ are all sums of ACs weighted in different ways. Their asymptotic distribution depends only on the joint asymmetric distribution of the $\rho_N(k)$
+\item Power of the tests can differ due to the different weighting of the ACs
+\item Other variants of long-run return regressions: Fama and French (1988) 
+\end{itemize}
+
+~
+
+You'll find out what the data say for US equities indices in Homework 1
+\end{frame}
+
+
+% \begin{frame}
+% \begin{footnotesize}
+% \begin{center}
+% \vskip -12pt
+% % Table generated by Excel2LaTeX from sheet 'Sheet1'
+% \begin{tabular}{lcccccccc}
+% \toprule
+%       & \multicolumn{8}{c}{\textbf{CRSP Value-Weighted Index (1926-2018)}} \\
+% \cmidrule{2-9}      & $\rho(1)$ & $\rho(2)$ & $\rho(3)$ & $\rho(4)$ & $\rho(5)$ & $Q(5)$ & $VR(5)$ & $\delta(5)$ \\
+% \cmidrule{2-9}Daily & 0.070 & -0.040 & 0.003 & 0.024 & 0.002 & 30.473 & 0.075 & 0.011 \\
+%       & (0.00) & (0.01) & (0.84) & (0.08) & (0.90) & (0.00) & (0.08) & (0.08) \\
+% \cmidrule{2-9}Monthly & 0.109 & -0.016 & -0.093 & 0.017 & 0.060 & 9.301 & 0.086 & 0.014 \\
+%       & (0.05) & (0.74) & (0.08) & (0.72) & (0.15) & (0.10) & (0.56) & (0.49) \\
+% \cmidrule{2-9}Annually & 0.004 & -0.171 & -0.024 & -0.193 & -0.066 & 3.702 & -0.295 & -0.134 \\
+%       & (0.97) & (0.30) & (0.84) & (0.13) & (0.57) & (0.59) & (0.45) & (0.13) \\
+% \midrule
+%       & \multicolumn{8}{c}{\textbf{CRSP Equal-Weighted Index (1926-2018)}} \\
+% \cmidrule{2-9}      & $\rho(1)$ & $\rho(2)$ & $\rho(3)$ & $\rho(4)$ & $\rho(5)$ & $Q(5)$ & $VR(5)$ & $\delta(5)$ \\
+% \cmidrule{2-9}Daily & 0.215 & 0.004 & 0.051 & 0.065 & 0.047 & 188.459 & 0.416 & 0.054 \\
+%       & (0.00) & (0.80) & (0.00) & (0.00) & (0.00) & (0.00) & (0.00) & (0.00) \\
+% \cmidrule{2-9}Monthly & 0.211 & 0.012 & -0.092 & -0.050 & -0.004 & 12.564 & 0.258 & 0.012 \\
+%       & (0.00) & (0.81) & (0.07) & (0.26) & (0.92) & (0.03) & (0.13) & (0.52) \\
+% \cmidrule{2-9}Annually & -0.048 & -0.089 & -0.020 & -0.224 & -0.106 & 5.430 & -0.289 & -0.140 \\
+%       & (0.59) & (0.69) & (0.88) & (0.05) & (0.29) & (0.37) & (0.50) & (0.12) \\
+% \bottomrule
+% \end{tabular}%
+
+
+% \end{center}
+% (p-values below point estimates)
+% \end{footnotesize}
+% \end{frame}
+
+% \begin{frame}
+%     % Table generated by Excel2LaTeX from sheet 'Sheet1'
+% \begin{footnotesize}
+% \begin{center}
+%     \vskip -12pt
+%     % Table generated by Excel2LaTeX from sheet 'Sheet1'
+% \begin{tabular}{lcccccccc}
+% \toprule
+%       & \multicolumn{8}{c}{\textbf{CRSP Value-Weighted Index (1999-2018)}} \\
+% \cmidrule{2-9}      & $\rho(1)$ & $\rho(2)$ & $\rho(3)$ & $\rho(4)$ & $\rho(5)$ & $Q(5)$ & $VR(5)$ & $\delta(5)$ \\
+% \cmidrule{2-9}Daily & -0.044 & -0.043 & 0.011 & -0.015 & -0.051 & 8.852 & -0.119 & -0.032 \\
+%       & (0.07) & (0.16) & (0.65) & (0.59) & (0.08) & (0.12) & (0.11) & (0.02) \\
+% \cmidrule{2-9}Monthly & 0.102 & -0.025 & 0.067 & 0.090 & -0.002 & 3.291 & 0.224 & 0.039 \\
+%       & (0.25) & (0.75) & (0.41) & (0.28) & (0.99) & (0.66) & (0.34) & (0.21) \\
+% \cmidrule{2-9}Annually & -0.023 & -0.277 & 0.040 & 0.122 & -0.276 & 5.587 & -0.289 & -0.186 \\
+%       & (0.93) & (0.08) & (0.75) & (0.29) & (0.25) & (0.35) & (0.62) & (0.34) \\
+% \midrule
+%       & \multicolumn{8}{c}{\textbf{CRSP Equal-Weighted Index (1999-2018)}} \\
+% \cmidrule{2-9}      & $\rho(1)$ & $\rho(2)$ & $\rho(3)$ & $\rho(4)$ & $\rho(5)$ & $Q(5)$ & $VR(5)$ & $\delta(5)$ \\
+% \cmidrule{2-9}Daily & 0.076 & 0.029 & 0.047 & 0.019 & -0.022 & 13.244 & 0.202 & 0.025 \\
+%       & (0.00) & (0.38) & (0.09) & (0.51) & (0.47) & (0.02) & (0.01) & (0.02) \\
+% \cmidrule{2-9}Monthly & 0.206 & -0.036 & 0.049 & 0.032 & -0.004 & 5.803 & 0.338 & 0.038 \\
+%       & (0.03) & (0.67) & (0.50) & (0.69) & (0.96) & (0.33) & (0.16) & (0.19) \\
+% \cmidrule{2-9}Annually & -0.157 & -0.243 & 0.021 & 0.132 & -0.349 & 7.687 & -0.473 & -0.316 \\
+%       & (0.54) & (0.13) & (0.85) & (0.49) & (0.03) & (0.17) & (0.40) & (0.15) \\
+% \bottomrule
+% \end{tabular}%
+% \end{center}
+% (p-values below point estimates)
+% \end{footnotesize}
+% \end{frame}
+
+% \begin{frame}{Daily $\rho(1)$ in rolling 252-day windows, CRSP VW}
+% \begin{center}
+% \includegraphics[width=\linewidth]{Images/Fig_rolling_vw}
+% \end{center}
+% \end{frame}
+
+% \begin{frame}{Daily $\rho(1)$ in rolling 252-day windows, CRSP EW}
+% \begin{center}
+% \includegraphics[width=\linewidth]{Images/Fig_rolling_ew}
+% \end{center}
+% \end{frame}
+
+% \begin{frame}{Month $\rho(1)$ in rolling 60-month windows, CRSP VW}
+% \begin{center}
+% \includegraphics[width=\linewidth]{Images/Fig_rolling_vwm}
+% \end{center}
+% \end{frame}
+
+% \begin{frame}{Month $\rho(1)$ in rolling 60-month windows, CRSP EW}
+% \begin{center}
+% \includegraphics[width=\linewidth]{Images/Fig_rolling_ewm}
+% \end{center}
+% \end{frame}
+
+% \begin{frame}{Explanations}
+% \textbf{Basic finding}
+
+% In short-run (daily, monthly): Positive AC at the index level, negative AC at the individual stock level
+% \vskip 8pt
+% \textbf{Example}
+
+% Equal-weighted index of two stocks $r_t = \frac{1}{2}r_{1,t} + \frac{1}{2}r_{2,t}$, assume $\text{Cov}(r_{1,t+1},r_{1,t}) = \text{Cov}(r_{2,t+1},r_{2,t}) = \gamma$
+% $$\text{Cov}(r_{t+1},r_t) = \frac{1}{2} \gamma + \frac{1}{4} \text{Cov}(r_{1,t+1},r_{2,t}) + \frac{1}{4} \text{Cov}(r_{2,t+1},r_{1,t})$$
+% \vskip -4pt
+% \begin{itemize}
+% \item Thus, if $\gamma < 0$ and $\text{Cov}(r_{t+1},r_t) > 0$, it must be that $\text{Cov}(r_{1,t+1},r_{2,t}) + \text{Cov}(r_{2,t+1},r_{1,t}) > 0$, i.e. there is positive \textit{cross-serial} correlation
+% \item Empirically, large stock returns lead small stock returns
+% \item Partially because of non-synchronous trading and stale prices of small stocks
+% \end{itemize}
+% \end{frame}
+
+\begin{frame}{Emerging research}
+    More-recent research \footnotesize{(e.g. Gupta and Kelly (2019))} \normalsize{looks at $\rho$ for non-market portfolios}
+    \begin{center}
+\includegraphics[width=0.85\linewidth]{Images/GK_2019}
+\end{center}    
+\end{frame}
+
+\end{document}

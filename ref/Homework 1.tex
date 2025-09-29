@@ -1,0 +1,110 @@
+\documentclass[12pt]{article}
+
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage[letterpaper,top=1in,bottom=0.75in,left=1in,right=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{nicefrac}
+
+\newcommand{\E}{\mathbb{E}}
+
+%\voffset = -0.5in
+%\topmargin = 0pt
+%\hoffset = -0.5in
+%\textwidth = 7.5in
+%\marginparsep = 0in
+%\marginparpush = 0pt
+%\oddsidemargin = 0in
+
+\pagestyle{fancy}
+%\lhead{\footnotesize{Johnson and So}}
+\fancyhead[L]{\footnotesize{Due Tuesday 9/23/2025}}
+\fancyhead[C]{\footnotesize{Finance 395 4 (Johnson) Homework 1}}
+\fancyhead[R]{\footnotesize{\thepage}}
+\fancyfoot[C]{}
+
+\begin{document}\thispagestyle{empty}
+%\vskip -6pt
+%\hrule 
+%\vskip 6pt
+\begin{center}
+{\Large \textbf{Finance 395 4 (Johnson) -- Homework 1}}
+\vskip 12pt
+{\normalsize \textbf{Due Tuesday 9/23/2025 at 11:59pm}}
+\end{center}
+\hrule 
+\vskip 12pt
+\textbf{Instructions}: Type up your solution clearly, using tables and graphs where appropriate.
+
+~
+
+\noindent \textbf{In addition to showing your results, you must also explain and discuss your results in words, as you would in a paper. How do we interpret them? What can we learn about finance from them? If you just report results without any interpretation your grade will suffer.}
+
+~
+
+\noindent Attach the code you use to your writeup as an Appendix.
+
+~
+
+\noindent This is an individual assignment. You are allowed to discuss informally with other students but your code and writeup must be done independently and should not be shared with other students prior to the deadline.
+\vskip 12pt
+\hrule 
+\vskip 12pt
+
+\noindent \textbf{Problem 1}
+
+asdf the autocorrelation of US stock market indices, both value- and equal-weighted, using the tools described in Lecture 1. Demonstrate and correct for the small-sample bias by simulating random samples.
+
+\vskip 12pt
+
+\noindent \textbf{Problem 2}
+
+Using the daily returns of the value-weighted market index you downloaded for Problem 1, evaluate how well the past year of daily returns can forecast the next day's market index return using the following ``machine learning'' techniques:
+\begin{enumerate}
+    \item LASSO
+    \item Ridge Regression
+    \item Elastic Net
+    \item Neural Network -- don't go crazy here, one hidden layer is fine for this exercise
+\end{enumerate}
+For the first three, include the past five days of realized returns individually but also the sum of past returns over the prior 10, 21, 42, 63, 84, 105, 126, $\ldots$ 252 days. For the neural network, include all 252 lags independently.
+
+\vskip 12pt
+
+\noindent \textbf{Problem 3}
+
+Download data on the returns of the Fama French 25 Portfolios Formed on Size and Book-to-Market. 
+
+\begin{enumerate}[label=(\Alph*)]
+\item Compute the maximum Sharpe Ratio portfolio (tangency portfolio) combining the four extreme portfolios (smallest and largest values of Size and Book-to-Market). Verifying that:
+$$\E( r_i ) = r_f + \beta_{i,\text{msr}} \left( E( r_\text{msr}) - r_f \right)$$
+holds among the four extreme portfolios. Assess how well this asset pricing model works for the remaining 21 assets. You don't need a formal statistical test here, just an informal assessment of fit (does it line up well or poorly?)
+\item Compute the pricing portfolio's Sharpe Ratio. Would you expect this Sharpe Ratio to be attainable in practice? Why or why not?
+\item Compute the optimal portfolio formed among only the four extreme portfolios for an investor with log utility over portfolio returns. Comment on how this differs from the tangency portfolio.
+\item Find the portfolio weights for maximum Sharpe Ratio portfolio (tangency portfolio) among all portfolios using all 25 assets, and report its Sharpe Ratio.
+\end{enumerate}
+
+\noindent \textbf{Problem 4}
+
+This problem requires data from ``Hw1p45.xlsx,'' available on the course website. Use the quarterly real return on the CRSP value-weighted index and Treasury Bills from this data set, along with the non-durables consumption data in the spreadsheet, to replicate the empirical test of the Hansen and Jagannathan (1991) bound. 
+\begin{enumerate}[label=(\Alph*)]
+\item How do you interpret your findings?
+\item How do your results compare those in the original Hansen and Jagannathan (1991)?
+\item Say we added additional assets beyond the CRSP value weighted index and Treasury Bills. How would this change the Hansen Jagannathan (1991) bound?
+\end{enumerate}
+
+\vskip 12pt
+
+\noindent \textbf{Problem 5}
+
+This problem requires data from ``Hw1p45.xlsx,'' available on the course website. Replicate Figure 4 of Mehra and Prescott (1985), using the non-durables consumption data in the spreadsheet to calculate the moments of $\lambda$. Add a point for the observed average (real) risk-free rate and average risk premium. Interpret your findings, and compare the results to those in the original Mehra and Prescot (1985) paper. 
+
+% \end{enumerate}
+
+% Use the data in ``Hw1p34.xlsx'' to estimate and test the Euler Equation
+% $$\mathbb{E} \left[ \beta \left( \frac{C_{t+1}}{C_t} \right)^{-\gamma} R_{t+1} \middle\vert I_t \right] = 1$$
+% with GMM, where $R_{t+1}$ is a $2\times1$ vector of quarterly real (gross) returns on the CRSP value-weighted index and of Treasury Bill real (gross) returns. As instruments, use a constant, the dividend yield at the end of quarter $t$, the Treasury Bill real return in quarter $t$, and the CRSP value-weighted index real return in quarter $t$. Report first-stage (with identity weighting matrix) and second-stage (with the optimal weighting matrix) GMM estimates of $\beta$ and $\gamma$ [Hint: use the Matlab function fminunc(.) or some other function minimization routine in your programming language of choice to numerially minimize the GMM criterion function]. Then perform a test of the overidentifying restrictions. When estimating the optimal weighting matrix, you should allow for heteroskedasticity, but you can assume zero autocorrelation. In your write-up, be specific about how exactly you construct your estimator, the assumptions you are making, the distribution and degrees of freedom of your test statistics, etc. Finally, explore how your results change when you omit the lagged dividend yield and the Treasury Bill return from the instrument vector. Discuss your results, and compare them to those presented in Hansen and Singleton (1984, erratum). 
+
+\end{document}
+
