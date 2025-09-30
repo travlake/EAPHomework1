@@ -1,4 +1,4 @@
-﻿_# Finance 395.4 – Empirical Methods in Asset Pricing
+﻿# Finance 395.4 – Empirical Methods in Asset Pricing
 
 Repository for Homework 1 (and supportive lecture references) for Finance 395.4 "Empirical Methods in Asset Pricing" at the McCombs School of Business.
 
@@ -9,77 +9,96 @@ Repository for Homework 1 (and supportive lecture references) for Finance 395.4 
 ---
 ## Repository Layout
 ```
-ref/        Source .tex and distributed PDF files for Homework 1 and lecture slide decks
-src/        (Reserved) Python or data scripts for empirical exercises (currently empty)
-tex/        LaTeX build / auxiliary artifacts (e.g., auxil/ for .aux, .log, etc.)
-```
-Current notable files:
-- `ref/Homework 1.tex` – Main homework assignment write‑up (source)
-- `ref/Lecture 1 - Overview of Empirical Asset Pricing.tex` (+ PDF)
-- `ref/Lecture 2 - Consumption Based Asset Pricing.tex` (+ PDF)
-- `ref/Lecture 3 - Machine Learning and AI.tex` (+ PDF)
-
-Auxiliary logs (e.g., `tex/auxil/*.log`, `*.aux`) are separated to keep the root clean.
-
----
-## Building the LaTeX Documents
-You can compile any of the `.tex` sources in `ref/` into PDFs locally.
-
-### Recommended Toolchain (Windows)
-- Install a modern TeX distribution: [TeX Live](https://tug.org/texlive/) or [MiKTeX](https://miktex.org/)
-- (Optional) Install `latexmk` for automated multi-pass builds
-- Editor suggestions: VS Code with LaTeX Workshop extension, PyCharm with TeXiFy IDEA, or Cursor with LaTeX Workshop
-
-### Quick Compile (single file)
-From the repository root (PowerShell):
-```powershell
-cd ref
-pdflatex "Homework 1.tex"
-bibtex   "Homework 1"   # Only if bibliography is added later
-pdflatex "Homework 1.tex"
-pdflatex "Homework 1.tex"
+ref/                LaTeX sources + distributed PDFs for homework & lectures
+src/hw1/            Python package with problem scaffolds & utilities
+    problem1.py     Autocorrelation + small-sample bias simulation
+    problem2.py     Return forecasting (LASSO / Ridge / Elastic Net / NN)
+    problem3.py     FF25 portfolios: tangency, pricing relation, log utility
+    problem4.py     Hansen–Jagannathan bound (placeholder implementation)
+    problem5.py     Mehra–Prescott equity premium illustration (placeholder)
+    data.py         Synthetic data loaders (replace with real data ingestion)
+    portfolio.py    Portfolio math helpers (Sharpe, tangency)
+    ml.py           Thin wrappers around scikit-learn models
+    consumption.py  Consumption growth helpers
+    paths.py        Centralized path constants
+run_all.py          Simple driver script demonstrating module usage
+requirements.txt    Python dependencies
+data/
+  raw/              (empty placeholder; put source files like Hw1p45.xlsx here)
+  processed/        (empty placeholder for cleaned / intermediate datasets)
+tex/                LaTeX auxiliary build artifacts (logs, aux, etc.)
+.gitignore          Ignore rules for Python, data, LaTeX aux files
 ```
 
-### Output Location
-By default PDFs will land in `ref/`. If you prefer isolating outputs, you can redirect using latexmk rc config or a build script later.
-
 ---
-## Python Environment (Planned for Empirical Exercises)
-A `.venv/` folder is present (local virtual environment). To (re)create from scratch:
+## Quick Start (Python Code)
+PowerShell (Windows):
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt   # (Add this file when empirical code is introduced)
+pip install -r requirements.txt
+python run_all.py   # smoke test of all problem scaffolds
 ```
-Currently no Python dependencies are tracked (no `requirements.txt` yet).
+bash (macOS/Linux):
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python run_all.py
+```
 
-Planned usage of `src/`:
-- Data ingestion & cleaning (CRSP/Compustat/WRDS style placeholders)
-- Factor construction (Fama-French style, anomalies, characteristics)
-- Regression or ML experiments (cross-sectional return prediction)
+`run_all.py` prints brief sanity outputs (autocorr summary, feature matrix shape, tangency Sharpe, etc.). Replace synthetic data loaders in `data.py` with real downloads (e.g., WRDS, CSV exports) when ready.
+
+---
+## Module Intent Summary
+- Problem 1: Compute and simulate autocorrelation; demonstrate small-sample bias.
+- Problem 2: Build lag & aggregated-return feature sets; run penalized linear models and a single-hidden-layer MLP (optional if scikit-learn installed).
+- Problem 3: Use (synthetic) FF25 to examine tangency portfolio, pricing relation, log-utility weights, and full 25-asset tangency.
+- Problem 4: Placeholder Hansen–Jagannathan bound summary (replace with real quarterly consumption + returns from Hw1p45.xlsx).
+- Problem 5: Placeholder Mehra–Prescott style grid of risk aversion vs implied premium; add observed point from data.
+
+Replace synthetic generators in `data.py` with real series: market returns, FF25, consumption, T‑bill returns. Keep interfaces consistent so downstream code runs unchanged.
+
+---
+## Building the LaTeX Documents
+Compile any `.tex` sources in `ref/`:
+```powershell
+cd ref
+pdflatex "Homework 1.tex"
+pdflatex "Homework 1.tex"  # repeat or use latexmk
+```
+(Extend with `bibtex` if/when a bibliography is added.)
+
+---
+## Data Handling Guidance
+Place original spreadsheets (e.g., Hw1p45.xlsx) in `data/raw/` (ignored by default except for a `.gitkeep`). Write cleaning scripts/notebooks to output processed parquet/CSV to `data/processed/`. Do not commit licensed / restricted raw data.
+
+---
+## Python Environment Notes
+Key dependencies: numpy, pandas, scipy, statsmodels, scikit-learn (optional ML), matplotlib, seaborn, tqdm, pytest. All pinned loosely in `requirements.txt` for flexibility. If you do not need ML yet, you can comment out scikit-learn to speed environment creation.
 
 ---
 ## Version Control / Contribution Notes
-- Keep generated PDFs committed only if they are distributed artifacts (current PDFs in `ref/` are acceptable). Avoid committing transient `.log`, `.aux`, `.out`, `.synctex.gz` unless diagnosing build issues.
-- Consider a `.gitignore` entry for common LaTeX aux files (future enhancement).
+- Keep raw data out of version control unless publicly distributable.
+- Commit generated PDFs in `ref/` only if they serve as distributed artifacts.
+- Avoid committing large intermediate datasets; prefer reproducible scripts.
 
 ---
 ## Suggested Next Enhancements
-1. Add a `requirements.txt` once empirical scripts begin.
-2. Introduce a Makefile or simple PowerShell script to batch build all lecture/homework PDFs.
-3. Add a `.gitignore` tuned for LaTeX + Python.
-4. Provide data schema documentation for any datasets used in analysis.
-5. Include reproducible notebooks for factor construction or ML demonstrations.
+1. Replace synthetic loaders with real data ingestion.
+2. Add unit tests for portfolio math and regression feature construction.
+3. Add notebook(s) demonstrating full workflow & plots.
+4. Implement real Hansen–Jagannathan frontier and Mehra–Prescott replication.
+5. Add plotting utilities (matplotlib / seaborn) for factor and SDF diagnostics.
 
 ---
 ## Academic Integrity
-This repository is intended for instructional and solution documentation purposes. If solutions are distributed, clarify permitted use for enrolled students. Avoid posting proprietary or restricted-access dataset contents.
+Write-up must include interpretation, not just numerical results. Code and analysis should be your own; informal discussion allowed per syllabus.
 
 ---
 ## Contact
-Questions or clarifications: reach out to Professor Travis L. Johnson via official course communication channels.
+Course questions: Instructor (official channels). Repository issues: open an issue or annotate in commit messages.
 
 ---
 ## License
-No explicit license specified yet. Add one (e.g., MIT or an academic license) if broader distribution is intended.
-
+No license declared yet. Add one (MIT / BSD / Academic) if sharing beyond course.

@@ -3,3 +3,42 @@ tex/out/*.gz
 tex/out/*.synctex
 tex/out/*.synctex(busy)
 .idea/
+
+# Python build / cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.build/
+.dist/
+
+# Virtual environments
+.venv/
+venv/
+.env/
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# Data (raw & processed) - keep directory, ignore contents except README
+/data/raw/*
+/data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Logs / temp
+logs/
+*.log
+
+# Latex auxiliary (extended)
+*.aux
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+
+# OS files
+.DS_Store
+Thumbs.db
