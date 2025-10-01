@@ -6,6 +6,7 @@ interfaces and simple synthetic data generators for testing pipeline code.
 from __future__ import annotations
 import pandas as pd
 import numpy as np
+import wrds
 from .paths import RAW_DATA, PROCESSED_DATA
 
 
@@ -18,15 +19,30 @@ def load_market_returns(kind: str = "value", freq: str = "D", n: int = 800) -> p
     freq : pandas frequency alias
     n : length of series
     """
-    rng = np.random.default_rng(0 if kind == "value" else 1)
-    dates = pd.date_range(end=pd.Timestamp.today().normalize(), periods=n, freq=freq)
-    # Add tiny AR(1) structure for realism
-    eps = rng.standard_normal(n) * 0.01
-    r = np.zeros(n)
-    phi = 0.05 if kind == "value" else 0.03
-    for t in range(1, n):
-        r[t] = phi * r[t-1] + eps[t]
-    return pd.Series(r, index=dates, name=f"{kind}_weighted_return")
+
+    # Define file path for cached data
+    file_path = PROCESSED_DATA / "market_returns.csv"
+
+    # If file exists, load from it
+    if file_path.exists():
+        market_data = pd.read_csv(file_path, index_col='date', parse_dates=['date'])
+    else:
+        # If file doesn't exist, download from WRDS
+        db = wrds.Connection(wrds_username="travisj")
+        market_data = db.get_table(library='crsp', table='dsi', columns=['date', 'vwretd', 'ewretd'])
+        db.close()
+
+        # Set date as index and save to file
+        market_data = market_data.set_index('date')
+        market_data.to_csv(file_path)
+
+    # Select the correct return series
+    if kind == "value":
+        return market_data['vwretd']
+    elif kind == "equal":
+        return market_data['ewretd']
+    else:
+        raise ValueError("kind must be 'value' or 'equal'")
 
 
 def load_ff25_monthly(n: int = 120) -> pd.DataFrame:
@@ -53,4 +69,3 @@ def load_consumption_and_rf(n: int = 160) -> pd.DataFrame:
 __all__ = [
     'load_market_returns', 'load_ff25_monthly', 'load_consumption_and_rf'
 ]
-

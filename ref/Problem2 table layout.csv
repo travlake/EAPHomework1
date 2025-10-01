@@ -1,0 +1,6 @@
+Model,Hyperparams,MSE,MAE,$R^2$
+Random Walk,,,,
+LASSO,,,,
+Ridge,,,,
+Elastic Net,,,,
+Neural Net,,,,

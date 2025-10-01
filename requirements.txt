@@ -10,6 +10,7 @@ tqdm>=4.66
 pytest>=8.2
 
 # Optional for data access / convenience (comment out if not desired)
+wrds>=3.1.6
 # yfinance>=0.2
 
 # For simple neural network (use scikit-learn MLP first). If PyTorch desired, uncomment:
