@@ -44,16 +44,16 @@ def create_features(returns: pd.Series) -> tuple[pd.DataFrame, pd.DataFrame, pd.
     # --- Features for Linear Models ---
     features_linear = pd.DataFrame(index=returns.index)
     # Past 5 days of returns
-    for i in range(1, 6):
+    for i in range(5):
         features_linear[f'ret_lag_{i}'] = returns.shift(i)
 
     # Sum of past returns over various windows
     windows = [10, 21, 42, 63, 84, 105, 126, 147, 168, 189, 210, 231, 252]
     for w in windows:
-        features_linear[f'ret_sum_{w}'] = returns.rolling(window=w).sum().shift(1)
+        features_linear[f'ret_sum_{w}'] = returns.rolling(window=w).sum()
 
     # --- Features for Neural Network ---
-    lags = range(1, 253)
+    lags = range(252)
     features_nn = pd.concat([returns.shift(l) for l in lags], axis=1)
     features_nn.columns = [f'ret_lag_{l}' for l in lags]
 
@@ -128,6 +128,11 @@ def solve_problem2():
     rw_mae = mean_absolute_error(rw_actuals, rw_forecasts)
     results.append({'Model': 'Random Walk', 'Hyperparams': '', 'MSE': rw_mse, 'MAE': rw_mae, '$R^2$': ''})
 
+    # --- Combine CV and Test sets for efficient slicing ---
+    X_linear_full = np.vstack([X_linear_cv_norm, X_linear_test_norm])
+    y_full_norm = np.hstack([y_cv_norm, y_test_norm])
+    cv_end_idx = len(X_linear_cv_norm)
+
     # --- LASSO ---
     print("Evaluating LASSO...")
     lasso_cv = LassoCV(cv=tscv, n_jobs=-1, random_state=42).fit(X_linear_cv_norm, y_cv_norm)
@@ -136,11 +141,17 @@ def solve_problem2():
     # Re-train sequentially on the test set
     lasso_preds_norm = []
     for i in tqdm(range(len(X_linear_test_norm))):
-        # Train on all data up to the current point in the test set
-        train_X = np.vstack([X_linear_cv_norm, X_linear_test_norm[:i]])
-        train_y = np.hstack([y_cv_norm, y_test_norm[:i]])
+        # Index for the full dataset
+        current_idx = cv_end_idx + i
+
+        # Train on all data up to the day *before* the current prediction day
+        train_X = X_linear_full[:current_idx]
+        train_y = y_full_norm[:current_idx]
+
         model = Lasso(alpha=lasso_alpha, random_state=42).fit(train_X, train_y)
-        pred = model.predict(X_linear_test_norm[i].reshape(1, -1))
+
+        # Predict using the features for the current day
+        pred = model.predict(X_linear_full[current_idx].reshape(1, -1))
         lasso_preds_norm.append(pred[0])
 
     lasso_preds = (np.array(lasso_preds_norm) * sigma) + mu # De-normalize
@@ -156,10 +167,17 @@ def solve_problem2():
 
     ridge_preds_norm = []
     for i in tqdm(range(len(X_linear_test_norm))):
-        train_X = np.vstack([X_linear_cv_norm, X_linear_test_norm[:i]])
-        train_y = np.hstack([y_cv_norm, y_test_norm[:i]])
+        # Index for the full dataset
+        current_idx = cv_end_idx + i
+
+        # Train on all data up to the day *before* the current prediction day
+        train_X = X_linear_full[:current_idx]
+        train_y = y_full_norm[:current_idx]
+
         model = Ridge(alpha=ridge_alpha, random_state=42).fit(train_X, train_y)
-        pred = model.predict(X_linear_test_norm[i].reshape(1, -1))
+
+        # Predict using the features for the current day
+        pred = model.predict(X_linear_full[current_idx].reshape(1, -1))
         ridge_preds_norm.append(pred[0])
 
     ridge_preds = (np.array(ridge_preds_norm) * sigma) + mu
@@ -176,10 +194,17 @@ def solve_problem2():
 
     enet_preds_norm = []
     for i in tqdm(range(len(X_linear_test_norm))):
-        train_X = np.vstack([X_linear_cv_norm, X_linear_test_norm[:i]])
-        train_y = np.hstack([y_cv_norm, y_test_norm[:i]])
+        # Index for the full dataset
+        current_idx = cv_end_idx + i
+
+        # Train on all data up to the day *before* the current prediction day
+        train_X = X_linear_full[:current_idx]
+        train_y = y_full_norm[:current_idx]
+
         model = ElasticNet(alpha=enet_alpha, l1_ratio=enet_l1_ratio, random_state=42).fit(train_X, train_y)
-        pred = model.predict(X_linear_test_norm[i].reshape(1, -1))
+
+        # Predict using the features for the current day
+        pred = model.predict(X_linear_full[current_idx].reshape(1, -1))
         enet_preds_norm.append(pred[0])
 
     enet_preds = (np.array(enet_preds_norm) * sigma) + mu
@@ -211,14 +236,41 @@ def solve_problem2():
             best_nn_size = size
 
     nn_preds_norm = []
-    for i in tqdm(range(len(X_nn_test_norm))):
-        train_X = np.vstack([X_nn_cv_norm, X_nn_test_norm[:i]])
-        train_y = np.hstack([y_cv_norm, y_test_norm[:i]])
-        model = MLPRegressor(hidden_layer_sizes=(best_nn_size,), activation='relu', max_iter=500, random_state=42).fit(train_X, train_y)
-        pred = model.predict(X_nn_test_norm[i].reshape(1, -1))
-        nn_preds_norm.append(pred[0])
+    # Initial model trained on the cross-validation set
+    print("Training initial Neural Network...")
+    train_X_initial = X_nn_cv_norm
+    train_y_initial = y_cv_norm
+    model = MLPRegressor(hidden_layer_sizes=(best_nn_size,), activation='relu', max_iter=500, random_state=42).fit(train_X_initial, train_y_initial)
 
-    nn_preds = (np.array(nn_preds_norm) * sigma) + mu
+    # Get year-end indices for retraining
+    test_years = y_test.index.year
+    end_of_year_indices = np.where(test_years[:-1] != test_years[1:])[0]
+    retrain_points = list(end_of_year_indices)
+
+    print(f"Starting expanding window forecast for Neural Net. Retraining at {len(retrain_points)} year-ends.")
+    last_retrain_point = -1 # Start with -1 to handle the first prediction period
+    for retrain_idx in tqdm(retrain_points + [len(y_test) - 1]):
+        # The model was trained up to last_retrain_point.
+        # Now, predict for the period from (last_retrain_point + 1) to retrain_idx.
+        start_pred_idx = last_retrain_point + 1
+        end_pred_idx = retrain_idx + 1
+
+        # Predict for all days in the current year period
+        if start_pred_idx < end_pred_idx:
+            X_to_predict = X_nn_test_norm[start_pred_idx:end_pred_idx]
+            preds = model.predict(X_to_predict)
+            nn_preds_norm.extend(preds)
+
+        # Retrain the model with data up to the current retrain_idx
+        # This model will be used for the next year's predictions
+        if retrain_idx < len(y_test) - 1: # Don't retrain after the very last point
+            print(f"\nRetraining at end of {y_test.index[retrain_idx].year}...")
+            train_X = np.vstack([X_nn_cv_norm, X_nn_test_norm[:retrain_idx + 1]])
+            train_y = np.hstack([y_cv_norm, y_test_norm[:retrain_idx + 1]])
+            model.fit(train_X, train_y)
+
+    # We need to make sure the number of predictions matches the test set size
+    nn_preds = (np.array(nn_preds_norm[:len(y_test)]) * sigma) + mu
     nn_mse = mean_squared_error(y_test, nn_preds)
     nn_mae = mean_absolute_error(y_test, nn_preds)
     nn_r2 = 1 - (nn_mse / rw_mse)

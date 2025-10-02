@@ -39,9 +39,9 @@ def main():  # pragma: no cover - simple orchestration
     hj = problem4.hj_bound_summary(cons_df['Rm'], cons_df['Rf'], cons_df['cons_growth'])
     print("Problem 4 HJ summary rows:", len(hj))
 
-    # Problem 5 lambda moments
-    lam = problem5.compute_lambda_moments(cons_df['cons_growth'])
-    print("Problem 5 lambda moments gammas:", lam['gamma'].tolist())
+    # Problem 5: Equity Premium Puzzle
+    problem5.solve_problem5()
+    print("Problem 5 solved and plot generated.")
 
 if __name__ == "__main__":
     main()
