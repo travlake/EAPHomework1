@@ -1,0 +1,10 @@
+Parts (a) & (c): Portfolio Weights for 4 Extreme Portfolios
+Portfolio,Tangency Portfolio,Log Utility Portfolio
+s1b1_vwret,-0.6334700056479551,-1.3965243551554296
+s1b5_vwret,0.9973696789626699,3.0817369934679464
+s5b1_vwret,0.6969785085592699,-0.7090444495891699
+s5b5_vwret,-0.06087818187398473,0.02383181127665324
+
+Part (b): Tangency Portfolio Summary
+Sharpe Ratio
+0.6822973738140539

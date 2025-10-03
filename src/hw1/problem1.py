@@ -14,7 +14,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from hw1.data import load_market_returns
-from hw1.paths import PROCESSED_DATA
+from hw1.paths import OUTPUT_DIR
 from statsmodels.regression.linear_model import OLS
 from tqdm import tqdm
 
@@ -45,7 +45,7 @@ def solve_problem1():
     result_table = pd.concat([panel_a, panel_b], keys=['Panel A: Value-Weighted', 'Panel B: Equal-Weighted'])
 
     # Save the results to a CSV file
-    output_path = PROCESSED_DATA / "problem1_solution.csv"
+    output_path = OUTPUT_DIR / "problem1_solution.csv"
     result_table.to_csv(output_path)
 
     print("Problem 1 solution saved to:", output_path)
