@@ -36,6 +36,9 @@ def load_market_returns(kind: str = "value", freq: str = "D", n: int = 800) -> p
         market_data = market_data.set_index('date')
         market_data.to_csv(file_path)
 
+    # drop rows with NaNs
+    market_data = market_data.dropna()
+
     # Select the correct return series
     if kind == "value":
         return market_data['vwretd']

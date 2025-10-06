@@ -1,0 +1,302 @@
+\documentclass[12pt]{article}
+
+%\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[bf]{caption}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage[letterpaper,top=1in,bottom=0.75in,left=1in,right=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{nicefrac}
+\usepackage{setspace}
+\usepackage{bigstrut}
+\usepackage{booktabs}
+\usepackage{natbib}
+
+\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+%\voffset = -0.5in
+%\topmargin = 0pt
+%\hoffset = -0.5in
+%\textwidth = 7.5in
+%\marginparsep = 0in
+%\marginparpush = 0pt
+%\oddsidemargin = 0in
+
+\pagestyle{fancy}
+%\lhead{\footnotesize{Johnson and So}}
+\fancyhead[L]{\footnotesize{}}
+\fancyhead[C]{\footnotesize{Finance 395 4 (Johnson) Homework 1}}
+\fancyhead[R]{\footnotesize{\thepage}}
+\fancyfoot[C]{}
+
+\begin{document}\thispagestyle{empty}
+%\vskip -6pt
+%\hrule
+%\vskip 6pt
+\begin{center}
+{\Large \textbf{Finance 395 4 (Johnson) -- Homework 1}}
+\vskip 12pt
+{\normalsize \textbf{Solution by Travis L. Johnson}}
+\end{center}
+\hrule
+\doublespacing
+
+\vskip 16pt
+\noindent {\large \textbf{Problem 1}}
+
+\noindent {\textbf{Part (a)}}
+
+I examine the autocorrelation of US stock market index returns using linear regressions of returns on past returns:
+$$r_{t} = a + \rho(j) r_{t-j} + \epsilon_{j,t}.$$
+For the returns $r_t$, I use CRSP value-weighted dividend-inclusive index returns for a sample from 1927-2020. I analyze daily, monthly, and yearly frequencies without overlap, and compute asymptotic standard errors assuming homoskedasticity as well as asymptotic heteroskedasticity-consistent standard errors. The latter are much larger here, especially at daily and monthly horizons, because time-varying volatility means stock market returns are quite heteroskedastic.
+
+Panel A of Table \ref{table_sighats} presents the results for simple returns. The strongest evidence of autocorrelation is for daily returns. The first lag, $\rho(1)$, is statistically and economically significant at 5.34\%. For example, if the market goes up by 1\% today, on average it will go up by 0.05\% the next day (14\% annualized). The second lag, $\rho(2)$, is insignificantly \textit{negative}, indicating that while abnormal returns continue for one day, they actually reverse on the following day. The autocorrelations at lags 3-5 are also positive, though not significantly so, indicating that the combined effect of the first five lags is a slightly positive autocorrelation in daily market returns.
+
+Combining the five individual lags using the \cite{box1970distribution} Q statistic, which squares each individual autocorrelation estimate, strongly rejects the no-autocorrelation null because the second and fourth lags are also non-trivial but go in opposite directions. The variance ratio and long-run return approaches, $VR$ and $\delta$, which allow cancellation when different lags have different signs, only reject the no-autocorrelation null when assuming homoskedasticity.
+
+For monthly returns, the evidence of autocorrelation is similar in direction to daily returns but weaker in significance. The first lag is positive, as are the fourth and fifth, but the second and third are negative. The third lag is almost as negative as the first lag is positive, indicating that the positive autocorrelation in the first month mostly reverses in the third. Again only the $Q$ statistic is significant among the joint tests, and only at the 10\% level when admitted heteroskedasticity.
+
+For annual returns, Table \ref{table_sighats} shows no significant evidence of autocorrelation. However, because the sample has only 88 years, the coefficients are estimated very imprecisely. For example the 95\% confidence interval for one-year autocorrelation is [-20.2\%,32.2\%], meaning we can't rule out significant autocorrelation in annual returns in either direction. Interestingly, the join evidence points a bit more towards negative autocorrelation because lags 2 through 5 are consistently negative.
+
+\noindent {\textbf{Part (b)}}
+
+Panel B of Table \ref{table_sighats} repeats the analysis using log returns, and finds substantially similar results but with, in almost every case, slightly higher autocorrelation coefficients. The reason for this is the Jensen's inequality effect of volatility on the average log returns, which causes average log returns to be smaller when volatility is high. While there is only weak evidence of persistence in average returns, there is strong evidence in the persistence of return volatility, and so this Jensen's inequality effect increases the autocorrelation of log equity returns. This effect, however, is quite small and doesn't change our inferences substantially from Panel A.
+
+\noindent {\textbf{Part (c)}}
+
+To assess the magnitude of the small-sample bias in autocorrelation estimates, I use simulated small samples that match the size and volatility of the daily, monthly, and annual samples described above. I simulate returns under the null hypothesis of no autocorrelation and homoskedasticity. Panel C of Table \ref{table_sighats} presents the average and standard deviation of autocorrelation estimates across 500,000 simulations. These simulations indicate that there is a small-sample downward bias in autocorrelation estimates, but that this estimated bias is extremely small for daily and monthly samples (0.5bp and 10bp, respectively). For annual returns, the bias is more substantial (1.08\%), but still small relative to the large standard errors in Panels A and B. Comparing the magnitudes in Panel C to those I find in the actual data, it is clear that small-sample bias does not substantially effect my inferences about return autocorrelation.
+
+Relatedly, the standard deviations of autocorrelation estimates in Panel C match the asymptotic homoskedasticity standard errors from Panels A and B perfectly. This is not surprising given the data generating process in Panel C is normal and homoskedastic.
+
+\clearpage
+\noindent {\large \textbf{Problem 2}}
+
+\noindent {\textbf{Part(a)}}
+
+I examine asset pricing in an artificial environment with 1055 different states of the world and 10 different traded securities. Using a risk-free rate of 0.25\%, for each security I compute its Sharpe Ratio as:
+$$SR_i \equiv \frac{\E(r_i) - r_f}{\sigma(r_i)},$$
+where $\sigma(\cdot)$ is the standard deviation. Figure \ref{figure_srs} presents these 10 different Sharpe Ratios, which indicate that 8 of the 10 assets have substantially similar Sharpe Ratios in the range of 0.11 to 0.15. The two exceptions are assets 1 and 5, which have Sharpe Ratios around 0.05 and 0.08, respectively.
+
+\noindent {\textbf{Part (b)}}
+
+I find the portfolio with the maximum possible Sharpe Ratio among the first four assets by using the procedure described in Lecture 1. First, I augment for an augmented return vector including the gross returns of the first four assets and the gross risk-free return. I then solve for the SDF in the space of the payoff space of these five assets:
+\begin{align*}
+m_T^* &= \dot{w}_t' R_T \\
+\dot{w}_t &\equiv \left( \mathbb{E} \left( R_T R_T' \mid I_t \right) \right)^{-1} \mathbf{1}_N
+\end{align*}
+From these SDF weights we can find the maximum Sharpe Ratio portfolio by taking the weights on the four risky assets and re-scaling them so they add up to one. Specifically, the max Sharpe Ratio portfolio has weights $\frac{v_t}{\sum v_t}$, where $v_t$ contains the elements of $\dot{w}_t$ that correspond to the four risky assets.
+
+The resulting weights for the first four assets are:
+
+\singlespacing
+\begin{center}
+\begin{tabular}{ccccc}
+\hline
+\hline
+Asset & 1 & 2 & 3 & 4 \bigstrut[t] \\
+Weight & -0.6541 & 1.0851 & 0.5577 & 0.0112 \bigstrut[b] \\
+\hline
+\hline
+\end{tabular}
+\end{center}
+
+\doublespacing
+This portfolio is primarily long assets 2 and 3, which have high Sharpe Ratios, and short asset 1, which has the lowest Sharpe Ratio. Interestingly, it is neutral with respect to asset 4, which has essentially the same Sharpe Ratio as asset 3, because asset 3 has more advantageous correlations with assets 1 and 2.
+
+A portfolio with these weights has a Sharpe Ratio of \textbf{0.1923}, substantially higher than the Sharpe Ratio of any individual asset in Part (a).
+
+\noindent {\textbf{Part (c)}}
+
+I now test the asset pricing model from Lecture 1:
+\begin{align*}
+\mathbb{E}(R_{x,T}) &= R_f + \beta_{x,msr} \left( \mathbb{E}(R_{msr,T}) - R_f \right) \\
+\beta_{x,m} &= \frac{\text{cov}(R_{x,T},R_{msr,T})}{\text{var}(R_{msr,T})}
+\end{align*}
+using the maximum Sharpe Ratio portfolio among the first four assets for $R_{msr,T}$. This asset pricing model, by construction, prices the first four assets perfectly. However, since assets 5-10 were not used to construct $R_{msr,T}$, there is no guarantee this asset pricing model works exactly or even approximately.
+
+To test whether the predicted linear relation between $\beta_{x,msr}$ and $\E(R_{x,T})$ holds for the remaining six assets, Figure \ref{figure_ervsbeta} plots each asset's $\beta_{x,msr}$ and $\E(R_{x,T})$, as well as the line predicted by the model. As guaranteed by the construction of $R_{msr,T}$, the expected returns of assets 1-4 are exactly as predicted by the model. Furthermore, assets 8, 9, and 7 are almost exactly on the line, and assets 6 and 10 are fairly close to it, indicating that our 4-asset tangency portfolio prices 5 of the 6 ``out-of-sample'' assets quite well. The primary exception, however, is asset 5. The model predicts a 1.67\% expected return for asset 5, when in fact its expected return is 1.06\%.
+
+\noindent {\textbf{Part (d)}}
+
+I find the maximum Sharpe Ratio portfolio among all portfolios combining the 10 assets using the same procedure as part (b). The resulting portfolio weights are:
+
+\singlespacing
+\begin{center}
+% Table generated by Excel2LaTeX from sheet 'Problem 2b'
+\begin{tabular}{cccccc}
+\hline
+\hline
+Asset & 1     & 2     & 3     & 4     & 5 \bigstrut[t]\\
+Weight & -0.5648 & 1.2091 & 0.6442 & -0.1752 & -1.0131 \bigstrut[b]\\
+\hline
+Asset & 6     & 7     & 8     & 9     & 10 \bigstrut[t]\\
+Weight & 0.1379 & 0.6981 & 0.1105 & 0.7317 & -0.7785 \bigstrut[b]\\
+\hline
+\hline
+\end{tabular}%
+\end{center}
+
+\doublespacing
+This portfolio has similar weights on the first four assets as the portfolio in Part (b). Perhaps unsurprisingly given the underperformance of asset 5 in Part (c), it also takes a large short position in asset 5. The remaining 5 assets have less dramatic portfolio weights, though the weights on assets 7 and 9 are significantly positive and the weight on asset 10 is significantly negative.
+
+A portfolio with these weights has a Sharpe Ratio of \textbf{0.2483}, substantially higher than any individual asset or the highest Sharpe Ratio portfolio among just the first four assets.
+
+\clearpage
+
+\noindent {\large \textbf{Problem 3}}
+
+I use a Hansen-Jagannathan bound to assess asset pricing models with a representative agent with CARA utility. These models have stochastic discount factors of the form:
+$$m_{t+1} = \beta \left( \frac{C_{t+1}}{C_t} \right)^{-\gamma},$$
+where $\beta$ is the subjective discount factor and $\gamma$ is the relative risk aversion coefficient.
+
+The Hansen Jagannathan bound states that the variance of any SDF must satisfy:
+$$\text{Var}[m_{t+1}] \geq \text{Var}[m^*_{t+1}(\nu)],$$
+where $m^*_{t+1}(\nu)$ is the SDF in a payoff space of risky assets augmented by a hypothetical risk-free asset with expected return $\frac{1}{\nu}$. To find the variance of this SDF, we use:
+\begin{align*}
+\text{Var}[m^*_{t+1}(\nu)] &= \text{Var}[R^*_{t+1}(\nu)] = (1 - \nu \E[R_{t+1}])'\Sigma^{-1}(1 - \nu \E[R_{t+1}])\\
+&= \left( \E[R_{t+1}] - \frac{1}{\nu} \right)' \Sigma^{-1} \left( \E[R_{t+1}] - \frac{1}{\nu} \right) \nu^2 \\
+\Sigma &= \E[(R_{t+1}-\E[R_{t+1}])(R_{t+1}-\E[R_{t+1}])]
+\end{align*}
+
+I apply this approach using two unconditionally risky assets, the real CRSP value-weighted US equity return and the real US treasury-bill return, both measured quarterly. For possible values of $\nu$ varying from 0.94 to 1.05, I compute and plot the HJ bound using sample mean-returns for $\E(R_{t+1})$ in Figure \ref{figure_hjbound}. The results show that for $\nu$ slightly smaller than one (slightly positive risk-free rates), the HJ bound requires only a relatively small standard deviatiations (less than 25\% per quarter). However, as $\nu$ deviations from one, the HJ bound quickly requires much more volatile SDFs.
+
+We can use this HJ bound to assess asset pricing models based on CRRA utility by using realized consumption data and looking for values of $\beta$ and $\gamma$ that produce in-sample SDF distributions whose means and standard deviations satisfy the HJ bound. In particular, I use quarterly consumption data for non-durables and services in the US, assume $\beta = 0.99$, and try values of $\gamma$ varying between 0 and 415. For each $\gamma$, I compute the in-sample mean and standard deviation of
+$$m_{t+1} = \beta \left( \frac{C_{t+1}}{C_t} \right)^{-\gamma}.$$
+
+The results are plotted as points in Figure \ref{figure_hjbound}. They show that for small $\gamma$, we get realistic values of $\nu$ but SDF volatility that is too low to meet the HJ bound. As we increase $\gamma$, our SDF volatility increases but our SDF mean decreases to unrealistic values that also do not satisfy the HJ bound. Finally, when $\gamma$ reaches 395, the SDF mean and volatility satisfy the HJ bound. Values this high are implausible for many reasons, one of which is that they produce an SDF with with quarterly volatility about five times its mean. Marginal utility simply cannot vary this much; if it did, we would observe much higher interest rates than the ones we see empirically.
+
+The conclusion of this exercise is that a simple unconditional HJ bound with only two assets rules out representative agent/CRRA models when you extend the \cite{hansen1991implications} analysis to quarterly data and a more recent sample period.
+
+\clearpage
+
+\noindent {\large \textbf{Problem 4}}
+
+For this problem, rather than using bounds to assess representative-agent CRRA asset pricing models, I follow the \cite{mehra1985equity} approach and assume the equity market portfolio equals the consumption claim. Together with the assumption that there is a representative agent with CRRA preferences, this implies:
+\begin{align*}
+\E ( R_{m,t+1} ) - \E ( R_{f,t+1} ) &= \frac{\overline{\lambda}}{\E \left[ \beta \lambda_{t+1}^{1-\gamma} \right]} - \frac{1}{\E \left[ \beta \lambda_{t+1}^{-\gamma} \right], } \\
+\E ( R_{f,t+1} ) &=  \frac{1}{\E \left[ \beta \lambda_{t+1}^{-\gamma} \right], }
+\end{align*}
+where $R_{m,t}$ is the real return of the equity market portfolio $R_{f,t}$ is the real risk-free rate, $\lambda_t$ is the growth rate of aggregate consumption, $\overline{\lambda}$ is the unconditional average $\lambda_t$, $\beta$ is the representative agent's time preference, and $\gamma$ is their risk aversion coefficient.
+
+To assess whether these equations hold empirically for reasonable values of $\beta$ and $\gamma$, I use data on realized consumption growth from 1952--2012. I then calculate the CRRA model's predictions for the equity $\E ( R_{m,t+1} ) - \E ( R_{f,t+1} )$ and $\E ( R_{f,t+1} )$ given a variety of $\beta < 1$ and $\gamma < 10$. Figure \ref{figure_mpbound} shows that these parameterizations result in extraordinarily low forecasts for the average equity premia, only getting as high as 0.016\%. This `admissible region' is well below the empirical estimate based on 1952--2012 data, echoing the result in Problem 3 that the CRRA model with a representative agent is strongly rejected by the consumption and asset return data.
+
+The admissible region in Figure \ref{figure_mpbound} is much smaller than the one presented in Figure 4 of \cite{mehra1985equity}. The difference is most likely caused by \cite{mehra1985equity} using an 1889--1978 sample period. The pre-war sample from 1889--1942 had much higher consumption volatility (see Figure 2 of \cite{mehra1985equity}), yielding a much higher implied equity premium in this exercise. To illustrate this point, I scaled up the more-recent data by a factor of 3, and then adjusted downwards so $\bar{\lambda}$ remained unchanged. The result (unplotted) looks much closer to Figure 4 in \cite{mehra1985equity}.
+
+% For this problem, rather than using bounds to assess representative-agent CRRA asset pricing models, I estimate the model parameters directly using the instrumental-variable GMM approach from Hansen and Singleton (1982).
+
+% The approach relies on the pricing equation:
+% $$ g(\beta,\gamma) \equiv \E \left[\left(\beta\left(\dfrac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}-1\right)  z_t \right] = 0,$$
+% which holds for any asset with gross returns $R_{t+1}$ and for any instrument $z_t$ that is measurable at time $t$. These equations are used as the moment restrictions in a GMM estimation of the model parameters $\beta$ and $\gamma$.
+
+% For this problem, I use two return series:
+% \begin{enumerate}
+% \item The next-quarter real value-weighted CRSP market index return $R_{t+1}^\text{market}$,
+% \item The next-quarter real US T-bill return $R_{t+1}^\text{t-bill}$,
+% \end{enumerate}
+% and four instrument series:
+% \begin{enumerate}
+% \item The current-quarter real value-weighted CRSP market index return $R_{t}^\text{market}$,
+% \item The current-quarter real US T-bill return $R_{t}^\text{t-bill}$,
+% \item The US equity market dividend yield at the end of quarter $t$,
+% \item A constant,
+% \end{enumerate}
+% resulting in eight moment restrictions. Since we have eight moment restrictions and only two free parameters, the model is over-identified.
+
+% I estimate the model parameters using two-stage GMM. In the first stage, I choose the parameter vector $\theta$ that minimizes the sum of the squared average moments:
+% \begin{align*}
+% \hat{\theta}_1 &=  \argmin_\theta g_T(\theta)' g_T(\theta) \\
+% g_T(\theta) &= \frac{1}{T} \sum_{t=1}^T \left[\left(\beta\left(\dfrac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}-1\right) \otimes z_t\right].
+% \end{align*}
+% In the second stage, I choose the parameter vector $\theta$ that minimizes the weighted sum of the squared average moments, where the weights are an estimate of the ``optimal'' GMM weighting matrix. Specifically, I estimate $\hat{\theta}_2$ using:
+% \begin{align*}
+% \hat{\theta}_2 &=  \argmin_\theta g_T(\theta)' \hat{S}^{-1} g_T(\theta) \\
+% \hat{S} &\equiv \sum_{t=1}^T f(x_{t+1},z_t,\hat{\theta}_1) f(x_{t+1-j},z_{t-j},\hat{\theta}_1)' \\
+% f(x_{t+1},z_t,\theta) &\equiv \left( \beta \left(\frac{C_{t+1}}{C_t}\right)^{-\gamma} R_{t+1}-1\right) \otimes z_t
+% \end{align*}
+
+% The results, presented in Table \ref{table_gmm}, are quite troubling. Using both instruments and in both stages of the regression, the estimated subjective discount factor $\beta$ is greater than one, indicating that the representative agent prefers money in the future to money today. The risk-aversion coefficients $\gamma$ are also unrealistic: 29 with all four instruments and 7.5 with just two instruments, a bit higher than the values lab experiments suggest. Finally, the over-identification tests, which are based on how well the model fits all 8 (4) moments using only 2 parameters, reject the model with $p$ values of 3.1\% (5.85\%). Together, the results in Table \ref{table_gmm} indicate that the representative agent model with CRRA utility function fails to explain the joint dynamics of four simple instruments and the returns of two economically paramount portfolios.
+
+
+\clearpage
+
+\bibliographystyle{jfnew}
+\bibliography{syllbib}
+
+\clearpage
+
+\begin{figure}[h]
+\caption{\textbf{Sharpe Ratios for the assets in Problem 2}} \label{figure_srs}
+\small{This figure presents Sharpe Ratios for the 10 different assets studied in Problem 2. They are computed using 1055 different equally-likely states of the world and a risk-free rate of 0.25\%.
+}
+
+\vspace{12pt}
+\includegraphics[width=\linewidth]{Images/assetsr.png}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h]
+\caption{\textbf{$\E(r_i)$ and betas with respect to the four-asset tangency portfolio}} \label{figure_ervsbeta}
+\small{This figure presents expected returns and betas with respect to the four-asset tangency portfolio for each of the 10 assets in Problem 2. The line represents the relation between beta and expected return predicted by the theory, namely:
+\begin{align*}
+\mathbb{E}(r_{i}) &= r_f + \beta_{i,msr} \left( \mathbb{E}(r_{msr}) - r_f \right) \\
+&= 0.25\% + \beta_{i,msr} 1.54\%
+\end{align*}
+}
+\vspace{12pt}
+\includegraphics[width=\linewidth]{Images/betavseri.png}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[h]
+\caption{Hansen Jagannathan bounds and CRRA utility functions} \label{figure_hjbound}
+\small{This figure shows the space of SDF means and standard deviations that satisfy the Hansen Jagannathan bound based on two risky assets: the real CRSP value-weighted return and the real US T-Bill return in quarterly data from 1961-2012. It also shows the SDF mean and standard deviations implied by a representative-agent CRRA model using a subjective discount factor $\beta = 0.99$ and risk-aversion values from $\gamma = 5$ to $\gamma = 415$. These in-sample SDF moments are based on quarterly growth in consumption of non-durables and services.
+}
+\vspace{12pt}
+
+\includegraphics[width=\linewidth]{Images/hjbound.png}
+\end{figure}
+
+\clearpage
+
+
+\begin{figure}[h]
+\caption{\cite{mehra1985equity} equity premium puzzle} \label{figure_mpbound}
+\small{This figure shows the space of average real risk-free rates and average equity premia that are consistent with historical consumption data and CRRA utility for a representative agent. For each pair of time discounting $\beta \leq 1$ and risk aversion $\gamma \leq 10$, I compute the implied return moments by following \cite{mehra1985equity} and assuming the stock market represents a claim to aggregate consumption. For comparison, I also plot the historical averages for the real risk-free rate and realized equity premia. The data are quarterly from 1951--2012, and returns are annualized.
+}
+\vspace{12pt}
+
+\includegraphics[width=\linewidth]{Images/mpbound.png}
+\end{figure}
+
+\clearpage
+
+\begin{table}[h]
+\caption{\textbf{Autocorrelation of US equity index returns}} \label{table_sighats}
+\small{This table contains estimates of the autocorrelation coefficient for US stock index returns from regressions of the form: $$r_{t} = a + \rho(j) r_{t-j} + \epsilon_{j,t}.$$
+Returns $r_t$ are the CRSP value-weighted dividend-inclusive index returns for a sample from 1927-2012. Panel A uses simple returns, and Panel B uses contiuously compounded (log) returns. Two standard errors are presented in parenthesis, homoskedastic and heteroskedasticity-consistent. For Q statistics $Q(5)$, variance ratio statistics $VR(5)$, and long-run predictability coefficiends $\delta(5)$, I present $p$-values in brackets. Estimates with ***, **, and * are significant at the 1\%, 5\%, and 10\% level using the heteroskedasticity-consistent standard errors. Panel C presents the average and standard deviation of point estimates for 100,000 simulations under the null of no autocorrelation. Each simulation matches the size and volatility of observed returns at the frequency in question.}
+
+\vspace{12pt}
+\footnotesize{
+\input{table_autocorr.tex}
+}
+\end{table}
+
+\clearpage
+
+% \begin{table}[h]
+% \caption{\textbf{CRRA preference estimates using GMM with instrumental variables}} \label{table_gmm}
+% \small{The table presents estimates of the subjective discount factor $\beta$ and risk-aversion coefficient $\gamma$ for a model with a representative agent having a constant relative risk aversion utility function. The model is estimated with the generalized instrumental variables approach from Hansen and Singleton (1982). Specifically, I use two test assets: the real CRSP value-weighted US equity market return, and the real US treasury bill return; and four instruments: the lagged returns of the test assets, a constant, and the dividend yield of the US equity market. I also repeat the analysis using only the constant and the lagged market return as instruments. For both sets of instruments, I use two-stage GMM with estimated optimal weighting matrix in the second stage. For the second stage, I report the J statistic and corresponding p-value as a test of the over-identification restrictions.}
+
+% \vspace{12pt}
+% \small{
+% \input{table_gmm.tex}
+% }
+% \end{table}
+
+
+\end{document}
+
