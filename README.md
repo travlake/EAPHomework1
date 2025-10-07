@@ -81,15 +81,6 @@ Convert solution CSVs to formatted LaTeX tables:
 python src\hw1\to_latex.py
 ```
 
-Tables are saved in `tex/out/` and referenced by the main solution document.
-
-### Compile LaTeX Solution
-```powershell
-cd tex
-pdflatex "Homework 1 solution.tex"
-pdflatex "Homework 1 solution.tex"  # repeat for cross-references
-```
-
 ---
 ## Problem Summaries
 
@@ -153,17 +144,6 @@ All raw data stored in `data/raw/`, with processed versions cached in `data/proc
 - `tqdm` – Progress bars for simulations
 
 All dependencies pinned in `requirements.txt`.
-
----
-## Version Control Notes
-- Raw data files (`data/raw/`) are not committed (except `.gitkeep`)
-- Generated outputs (`output/`, `tex/out/`) are committed for reference
-- LaTeX auxiliary files (`*.aux`, `*.log`) are gitignored
-- Python cache (`__pycache__/`, `.pyc`) is gitignored
-
----
-## Academic Integrity
-This code implements solutions to assigned homework problems. Write-up must include economic interpretation and discussion, not just numerical results. All analysis should be original work; informal collaboration is allowed per course syllabus.
 
 ---
 ## Contact
