@@ -55,9 +55,10 @@ def solve_problem3():
     # (b) Sharpe Ratio for the 4-asset tangency portfolio (annualized)
     sharpe_tangency_4 = (ret_tangency_4.mean() / ret_tangency_4.std()) * np.sqrt(12)
 
-    # (c) Log utility portfolio for the 4 extreme assets
+    # (c) Log utility portfolio for the 4 extreme assets (not excess returns)
     # Find w* = argmax E[log(1 + w'*r)] using numerical optimization
-    w_log_utility_4 = calculate_log_utility_portfolio(excess_returns_4)
+    # w_log_utility_4 = calculate_log_utility_portfolio(excess_returns_4)
+    w_log_utility_4 = calculate_log_utility_portfolio(ff25[extreme_portfolios])
 
     # (a, cont.) Assess the pricing model for all 25 assets
     # Beta is calculated with respect to the 4-asset tangency portfolio
@@ -118,7 +119,7 @@ def create_sml_plot(betas: pd.Series, mean_returns: pd.Series, mean_tangency_ret
 
     # Add labels for each point
     for i, txt in enumerate(betas.index):
-        ax.annotate(txt, (betas[i], mean_returns_annual[i]), fontsize=7, alpha=0.6,
+        ax.annotate(txt, (betas[i], mean_returns_annual[i]), fontsize=14, alpha=0.6,
                     xytext=(5, -5), textcoords='offset points')
 
     # Plot the SML: E[R_i] = beta_i * E[R_mkt]
@@ -127,15 +128,15 @@ def create_sml_plot(betas: pd.Series, mean_returns: pd.Series, mean_tangency_ret
     ax.plot(sml_x, sml_y, color='red', linestyle='--', label='Security Market Line (SML)')
 
     # Formatting
-    ax.set_title(title, fontsize=16)
-    ax.set_xlabel(r'Beta ($\beta$) with respect to Tangency Portfolio', fontsize=12)
-    ax.set_ylabel('Annualized Average Monthly Excess Return', fontsize=12)
-    ax.legend()
+    ax.set_title(title, fontsize=18)
+    ax.set_xlabel(r'Beta ($\beta$) with respect to Tangency Portfolio', fontsize=16)
+    ax.set_ylabel('Annualized Average Monthly Excess Return', fontsize=16)
+    ax.legend(fontsize=14)
     ax.grid(True)
 
     # Save the figure
     output_path = OUTPUT_DIR / filename
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.savefig(output_path, dpi=400, bbox_inches='tight')
     print(f"SML plot saved to: {output_path}")
     plt.close()
 
