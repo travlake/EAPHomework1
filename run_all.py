@@ -15,33 +15,43 @@ SRC_DIR = PROJECT_ROOT / 'src'
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from hw1 import data, problem1, problem2, problem3, problem4, problem5  # noqa: E402
+from hw1 import problem1, problem2, problem3, problem4, problem5  # noqa: E402
 
 
 def main():  # pragma: no cover - simple orchestration
-    # Problem 1 demo
-    mkt_vw = data.load_market_returns(kind="value", n=300)
-    ac_res = problem1.compute_autocorrelation(mkt_vw, max_lag=5)
-    print("Problem 1 autocorr (first 5 lags):")
-    print(ac_res.autocorr.head())
+    print("=" * 60)
+    print("Running all homework solutions...")
+    print("=" * 60)
 
-    # Problem 2 feature matrix (linear only)
-    feat = problem2.build_linear_feature_matrix(mkt_vw)
-    print("Problem 2 feature matrix shape (linear):", feat.shape)
+    # Problem 1: Autocorrelation and small-sample bias
+    print("\n[1/5] Running Problem 1: Autocorrelation Analysis...")
+    problem1.solve_problem1()
+    print("✓ Problem 1 complete")
 
-    # Problem 3 extremes tangency (synthetic data)
-    ff25 = data.load_ff25_monthly(n=60)
-    summary3 = problem3.analyze_problem3(ff25)
-    print("Problem 3 extreme tangency Sharpe:", summary3['extreme_tangency']['sharpe'])
+    # Problem 2: ML forecasting models
+    print("\n[2/5] Running Problem 2: Return Forecasting Models...")
+    problem2.solve_problem2()
+    print("✓ Problem 2 complete")
 
-    # Problem 4 Hansen-Jagannathan placeholder
-    cons_df = data.load_consumption_and_rf(n=40)
-    hj = problem4.hj_bound_summary(cons_df['Rm'], cons_df['Rf'], cons_df['cons_growth'])
-    print("Problem 4 HJ summary rows:", len(hj))
+    # Problem 3: FF25 portfolio analysis
+    print("\n[3/5] Running Problem 3: Fama-French 25 Analysis...")
+    problem3.solve_problem3()
+    print("✓ Problem 3 complete")
+
+    # Problem 4: Hansen-Jagannathan bound
+    print("\n[4/5] Running Problem 4: Hansen-Jagannathan Bound...")
+    problem4.solve_problem4()
+    print("✓ Problem 4 complete")
 
     # Problem 5: Equity Premium Puzzle
+    print("\n[5/5] Running Problem 5: Equity Premium Puzzle...")
     problem5.solve_problem5()
-    print("Problem 5 solved and plot generated.")
+    print("✓ Problem 5 complete")
+
+    print("\n" + "=" * 60)
+    print("All problems solved successfully!")
+    print("Outputs saved in: output/")
+    print("=" * 60)
 
 if __name__ == "__main__":
     main()
